@@ -9,6 +9,7 @@ import { FaYoutube } from 'react-icons/fa6';
 import SecondSingleProduct from '../components/SecondSingleProduct';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import { useFilter, useSideBar, useSort } from '../components/ContextApi';
+import axios from 'axios';
 
 const Kids = () => {
   const [filterOpen, setFilterOpen] = useFilter();
@@ -50,7 +51,7 @@ const Kids = () => {
       });
       setKids(newProducts);
     }
-    else if(filter === "Featured"){
+    else if (filter === "Featured") {
       let filteredProducts = products.filter((product) => {
         return product.category === "Kids" || product.category.includes('Kids')
       });
@@ -61,12 +62,21 @@ const Kids = () => {
     }
   }, [filter]);
 
+  const getKidsProduct = async () => {
+    try {
+      let categoryProducts = await axios.get('http://localhost:3001/product/category/Kids');
+      console.log(categoryProducts.data.products);
+      if (categoryProducts.data.success) {
+        setKids(categoryProducts.data.products);
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
   useEffect(() => {
     setIsOpen(false);
-    let filteredProducts = products.filter((product) => {
-      return product.category === "Kids" || product.category.includes('Kids')
-    });
-    setKids(filteredProducts);
+    getKidsProduct();
   }, []);
   return (
     <div className=''>

@@ -9,6 +9,7 @@ import { FaYoutube } from 'react-icons/fa6';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import SecondSingleProduct from '../components/SecondSingleProduct';
 import { useFilter, useSideBar, useSort } from '../components/ContextApi';
+import axios from 'axios';
 
 const WinterCollection = () => {
   const [filterOpen, setFilterOpen] = useFilter();
@@ -61,12 +62,21 @@ const WinterCollection = () => {
     }
   }, [filter]);
 
+  const getWinterProduct=async()=>{
+    try{
+      let categoryProducts = await axios.get('http://localhost:3001/product/category/winterCollection');
+      console.log(categoryProducts.data.products);
+      if(categoryProducts.data.success){
+        setWinterCollection(categoryProducts.data.products);
+      }
+    }
+    catch(e){
+      console.log(e.message);
+    }
+  }
   useEffect(() => {
     setIsOpen(false);
-    let filteredProducts = products.filter((product) => {
-      return product.category === "Winter" || product.category.includes('Winter')
-    });
-    setWinterCollection(filteredProducts);
+    getWinterProduct();
   }, []);
   return (
     <div className=''>

@@ -9,6 +9,7 @@ const CartSlider = ({ right }) => {
     const [showCart, setShowCart] = useCart();
     const [rightval, setRightVal] = useState("-right-[30rem]");
     const [cart, dispatchCart] = useAddCart();
+    showCart ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto";
     let totalPrice = cart.reduce((prev, current) => {
         return prev += current.salePrice * current.qty
     }, 0);
@@ -20,7 +21,7 @@ const CartSlider = ({ right }) => {
             
             {
                 cart.length > 0 ? <div className={`absolute duration-300 shadow-xl top-0 z-[999] flex flex-col ${rightval} xl:w-4/12 w-10/12 lg:w-6/12 sm:w-8/12  h-screen bg-white`}>
-                    <div className='flex items-center h-14 border border-transparent border-b-slate-200 py-3'>
+                    <div className='flex items-center h-24 border border-transparent border-b-slate-200 py-3'>
                         <div className='absolute right-0 top-4 text-2xl cursor-pointer ease-in-out flex pr-3 justify-end text-black' onClick={() => { setRightVal("-right-[38rem]"); setShowCart(false) }}>
                             <RxCross1 className='' />
                         </div>
@@ -31,7 +32,7 @@ const CartSlider = ({ right }) => {
                     <div className=' py-4 h-64 xsm:h-72  lg:h-96 overflow-y-auto'>
                         {
                             cart.map((singleItem) => {
-                                return <CartProduct key={singleItem.id} product={singleItem} />
+                                return <CartProduct key={singleItem._id} product={singleItem} />
                             })
                         }
                         <div className='h-20 bg-[#f5f5f5] w-full'>

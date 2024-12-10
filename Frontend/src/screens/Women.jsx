@@ -10,6 +10,7 @@ import SecondSingleProduct from '../components/SecondSingleProduct';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import usePreviousPath from '../components/usePreviousPath';
 import { useFilter, useSideBar, useSort } from '../components/ContextApi';
+import axios from 'axios';
 
 const Women = () => {
   const prevPath = usePreviousPath();
@@ -63,11 +64,20 @@ const Women = () => {
     }
   }, [filter]);
 
+  const getWomensProduct=async()=>{
+    try{
+      let categoryProducts = await axios.get('http://localhost:3001/product/category/Womens');
+      console.log(categoryProducts.data.products);
+      if(categoryProducts.data.success){
+        setWomens(categoryProducts.data.products);
+      }
+    }
+    catch(e){
+      console.log(e.message);
+    }
+  }
   useEffect(() => {
-    let filteredProducts = products.filter((product) => {
-      return product.category === "Women" || product.category.includes('Women')
-    });
-    setWomens(filteredProducts);
+    getWomensProduct();
   }, []);
   useEffect(() => {
     setIsOpen(false);

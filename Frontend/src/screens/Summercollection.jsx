@@ -9,6 +9,7 @@ import { FaYoutube } from 'react-icons/fa6';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import SecondSingleProduct from '../components/SecondSingleProduct';
 import { useFilter, useSideBar, useSort } from '../components/ContextApi';
+import axios from 'axios';
 
 const Summercollection = () => {
   const [filterOpen, setFilterOpen] = useFilter();
@@ -50,7 +51,7 @@ const Summercollection = () => {
       });
       setSummerCollection(newProducts);
     }
-    else if(filter === "Featured"){
+    else if (filter === "Featured") {
       let filteredProducts = products.filter((product) => {
         return product.category === "Summer" || product.category.includes('Summer')
       });
@@ -61,12 +62,22 @@ const Summercollection = () => {
     }
   }, [filter]);
 
+  const getSummerProduct = async () => {
+    try {
+      let categoryProducts = await axios.get('http://localhost:3001/product/category/summerCollection');
+      console.log(categoryProducts.data.products);
+      if (categoryProducts.data.success) {
+        setSummerCollection(categoryProducts.data.products);
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
   useEffect(() => {
     setIsOpen(false);
-    let filteredProducts = products.filter((product) => {
-      return product.category === "Summer" || product.category.includes('Summer')
-    });
-    setSummerCollection(filteredProducts);
+    getSummerProduct();
   }, []);
   return (
     <div className=''>
@@ -74,7 +85,7 @@ const Summercollection = () => {
         Summer Collection
       </div>
       <div className='flex xl:px-20 justify-between gap-9 xsm:gap-20 sm:gap-0 items-center px-2 w-full'>
-        <div onClick={()=>{setFilterOpen(!filterOpen);localStorage.setItem('filterSlider',true)}} className='flex items-center cursor-pointer font-semibold md:justify-start justify-center pl-3 gap-1 text-slate-500 w-1/3'>
+        <div onClick={() => { setFilterOpen(!filterOpen); localStorage.setItem('filterSlider', true) }} className='flex items-center cursor-pointer font-semibold md:justify-start justify-center pl-3 gap-1 text-slate-500 w-1/3'>
           <svg fill='currentColor' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16"><path d="M324.4 64C339.6 64 352 76.37 352 91.63C352 98.32 349.6 104.8 345.2 109.8L240 230V423.6C240 437.1 229.1 448 215.6 448C210.3 448 205.2 446.3 200.9 443.1L124.7 385.6C116.7 379.5 112 370.1 112 360V230L6.836 109.8C2.429 104.8 0 98.32 0 91.63C0 76.37 12.37 64 27.63 64H324.4zM144 224V360L208 408.3V223.1C208 220.1 209.4 216.4 211.1 213.5L314.7 95.1H37.26L140 213.5C142.6 216.4 143.1 220.1 143.1 223.1L144 224zM496 400C504.8 400 512 407.2 512 416C512 424.8 504.8 432 496 432H336C327.2 432 320 424.8 320 416C320 407.2 327.2 400 336 400H496zM320 256C320 247.2 327.2 240 336 240H496C504.8 240 512 247.2 512 256C512 264.8 504.8 272 496 272H336C327.2 272 320 264.8 320 256zM496 80C504.8 80 512 87.16 512 96C512 104.8 504.8 112 496 112H400C391.2 112 384 104.8 384 96C384 87.16 391.2 80 400 80H496z"></path></svg>
           <span className='-mt-1'>
             Filter
@@ -140,7 +151,7 @@ const Summercollection = () => {
         option === 1 ? <div className='grid grid-cols-2 px-2 my-20 xsm:gap-1 md:gap-4 xl:mx-20 lg:mx-5 lg:gap-7 xl:px-20'>
           {
             summerCollection.length > 0 ?
-            summerCollection.map((summer) => {
+              summerCollection.map((summer) => {
                 return <div key={summer.id} className='flex items-center justify-center'> <SingleProduct type={1} wish={false} className="col-span-1" singleProduct={summer} />
                 </div>
               })

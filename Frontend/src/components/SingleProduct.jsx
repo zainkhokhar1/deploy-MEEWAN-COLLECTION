@@ -29,16 +29,16 @@ const SingleProduct = ({ singleProduct, wish, type, home, preview }) => {
     }
     useEffect(() => {
         if (wishList.length > 0 && singleProduct) {
-            const checking = wishList.some(singleItem => singleItem.id == singleProduct.id);
+            const checking = wishList.some(singleItem => singleItem._id == singleProduct._id);
             setLike(checking);
         }
     }, [wishList]);
     return (
-        <div className={`${preview ? "max-w-32" : "max-w-[140px] min-w-[125px]"} col-span-1 ${preview ? "xsm:max-w-[190px] xmd:max-w-[250px] md:min-w-[335px] xl:pr-5 lg:min-w-[445px] xl:min-w-[430px]" : "xsm:max-w-[190px] lg:h-fit"} xsm:h-fit mb-2 ${home ? "md:min-w-80" : "md:min-w-full"}  h-72 sm:min-h-fit overflow-hidden line-clamp-3 sm:mb-4`}>
+       singleProduct && <div className={`${preview ? "max-w-32" : "max-w-[140px] min-w-[125px]"} col-span-1 ${preview ? "xsm:max-w-[190px] xmd:max-w-[250px] md:min-w-[335px] xl:pr-5 lg:min-w-[445px] xl:min-w-[430px]" : "xsm:max-w-[190px] lg:h-fit"} xsm:h-fit mb-2 ${home ? "md:min-w-80" : "md:min-w-full"}  h-72 sm:min-h-fit overflow-hidden line-clamp-3 sm:mb-4`}>
             <div className={`relative max-w-full ${preview ? "xmd:min-h-[300px] md:min-h-[350px] lg:min-h-[520px]" : "md:h-36 sm:min-h-[340px]"} overflow-hidden xsm:w-full xsm:h-60 md:min-w-full h-44 ${home ? "md:min-h-72" : "md:min-h-36"}  z-0 ${type === 1 ? "md:min-h-96 lg:min-h-[33rem]" : type === 2 ? "md:h-72 lg:h-96" : type === 3 ? "md:h-52  lg:h-72" : type === 4 ? "md:h-52  lg:h-64" : type === 5 ? "md:h-52  lg:h-56" : ""} `}>
-                <Link to={`/product/${singleProduct.id}`}><img className='min-w-full h-full object-cover hover:scale-110 duration-700 ease-in-out' src={singleProduct.image} alt="Image" /></Link>
+                <Link to={`/product/${singleProduct._id}`}><img className='min-w-full h-full object-cover hover:scale-110 duration-700 ease-in-out' src={singleProduct?.images[0]} alt="Image" /></Link>
                 <div className='px-[5px] py-[10px] text-xs rounded-full bg-[#ff4e00] xl:px-[16px] xl:py-[16px] text-white absolute top-3 right-2'>
-                    {singleProduct.discount}
+                    {Math.round((((singleProduct.originalPrice-singleProduct.salePrice)/singleProduct.originalPrice)*100))}%
                 </div>
                 {
                     wish ? <Link onClick={() => handleRemoveWishItem(singleProduct)} className='text-lg absolute top-3 left-2 bg-white rounded-full px-1 py-1 w-fit h-fit '>

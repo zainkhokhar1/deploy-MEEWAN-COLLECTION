@@ -8,6 +8,7 @@ import { FaYoutube } from 'react-icons/fa6';
 import SecondSingleProduct from '../components/SecondSingleProduct';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import { useFilter, useSort } from '../components/ContextApi';
+import axios from 'axios';
 
 const Allproducts = () => {
   const [option, setOption] = useState(1);
@@ -22,8 +23,20 @@ const Allproducts = () => {
     localStorage.setItem('Sort', true);
     setSort(true);
   };
+  // Fetching products from backend
+  const getProducts = async () => {
+    try {
+      let products = await axios.get('http://localhost:3001/product/all');
+      console.log(products.data)
+      if(products.data.success){
+        setAllProducts(products.data.products);
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
   useEffect(() => {
-    setAllProducts(products);
+    getProducts();
   }, []);
   useEffect(() => {
     if (filter === "Alphabetically, A-Z") {
@@ -50,7 +63,7 @@ const Allproducts = () => {
       });
       setAllProducts(newProducts);
     }
-    else if(filter === "Featured"){
+    else if (filter === "Featured") {
       setAllProducts(products);
     }
     else {

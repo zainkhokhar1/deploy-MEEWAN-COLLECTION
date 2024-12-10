@@ -1,3 +1,5 @@
+import daisyui from 'daisyui';  // Use import instead of require
+
 export default {
   content: [
     "./index.html",
@@ -17,11 +19,10 @@ export default {
     },
   },
   plugins: [
-    require('daisyui'),
+    daisyui,  // No need to use `require`, just add the imported `daisyui`
   ],
   daisyui: {
     themes: false,  // Disable DaisyUI themes
   },
   darkMode: 'class', // Make sure darkMode is set to 'class' or 'media'
-}
-
+};

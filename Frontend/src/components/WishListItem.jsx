@@ -18,7 +18,10 @@ const WishListItem = () => {
     if (wishList.length === 0) {
         return (
             <>
-                <div className='h-svh font-semibold w-full text-2xl flex items-center justify-center mb-9'>No Item In the WishList</div>
+                <div className='h-screen flex-col font-semibold w-full text-2xl flex items-center justify-center mb-9'>
+                    <img src="https://img.freepik.com/free-vector/400-error-bad-request-concept-illustration_114360-1921.jpg?t=st=1733737825~exp=1733741425~hmac=cf7ba8065b38ece1f21a52b25112fad4b89fdeee51e543bf8ad303a7279187a0&w=740" alt="NOT FOUND IMAGE" />
+                   <div className='pt-8'> No Item In the WishList</div>
+                   </div>
             </>
         )
     }

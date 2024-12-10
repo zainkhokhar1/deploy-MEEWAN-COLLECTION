@@ -14,7 +14,7 @@ const reducer = (state, action) => {
         case "add":
             return [...state, action.payload];
         case "delete":
-            return state.filter((single) => single.id !== action.payload.id);
+            return state.filter((single) => single._id !== action.payload._id);
         default: return state
     }
 }
@@ -24,7 +24,7 @@ const reducer1 = (state, action) => {
             return [...state, action.payload];
         case "delete":
             return state.filter((singleCart) => {
-                return singleCart.id !== action.id
+                return singleCart._id !== action.id
             });
         case "update":
             return action.payload;

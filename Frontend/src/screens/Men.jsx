@@ -11,6 +11,7 @@ import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import usePreviousPath from '../components/usePreviousPath';
 import { useFilter, useSideBar, useSort } from '../components/ContextApi';
 import { MdKeyboardArrowDown } from "react-icons/md";
+import axios from 'axios';
 
 const Men = () => {
   const [filterOpen, setFilterOpen] = useFilter();
@@ -55,7 +56,7 @@ const Men = () => {
       });
       setMens(newProducts);
     }
-    else if(filter === "Featured"){
+    else if (filter === "Featured") {
       let filteredProducts = products.filter((product) => {
         return product.category === "Men" || product.category.includes('Men')
       });
@@ -65,14 +66,22 @@ const Men = () => {
       //skip the others for now
     }
   }, [filter]);
-
+  // Getting all the data from the backend
+  const getMensProduct = async () => {
+    try {
+      let categoryProducts = await axios.get('http://localhost:3001/product/category/Mens');
+      console.log(categoryProducts.data.products);
+      if (categoryProducts.data.success) {
+        setMens(categoryProducts.data.products);
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
   useEffect(() => {
     setIsOpen(false);
-    let filteredProducts = products.filter((product) => {
-      return product.category === "Men" || product.category.includes('Men')
-    });
-
-    setMens(filteredProducts);
+    getMensProduct();
   }, []);
   return (
     <div className=''>

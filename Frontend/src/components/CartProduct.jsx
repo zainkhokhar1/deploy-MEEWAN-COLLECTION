@@ -4,26 +4,17 @@ import { FaMinus, FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import { useAddCart } from './ContextApi';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+
+
 const CartProduct = ({ product, cartPage }) => {
     const [qty, setQty] = useState(1);
     const [cart, dispatchCart] = useAddCart();
     let totalPrice = cart.reduce((prev, current) => {
         return prev += current.salePrice * current.qty
     }, 0);
-
     const updateQuantityPlus = (product) => {
         let newItem = { ...product, qty: product.qty + 1 };
-        let cartItems = cart.filter((oneItem) => oneItem.id !== product.id);
-        cartItems.unshift(newItem);
-        dispatchCart({
-            type: 'update',
-            payload: cartItems,
-        });
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-    }
-    const updateQuantityMinus = (product) => {
-        let newItem = { ...product, qty: product.qty - 1 };
-        let cartItems = cart.filter((oneItem) => oneItem.id !== product.id);
+        let cartItems = cart.filter((oneItem) => oneItem._id !== product._id);
         cartItems.unshift(newItem);
         dispatchCart({
             type: 'update',
@@ -32,25 +23,38 @@ const CartProduct = ({ product, cartPage }) => {
         localStorage.setItem('cart', JSON.stringify(cartItems));
     }
 
-    const handleDeleteCart = (id) => {
+    const updateQuantityMinus = (product) => {
+        let newItem = { ...product, qty: product.qty - 1 };
+        let cartItems = cart.filter((oneItem) => oneItem._id !== product._id);
+        cartItems.unshift(newItem);
+        dispatchCart({
+            type: 'update',
+            payload: cartItems,
+        });
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+    }
+
+    const handleDeleteCart = (product) => {
+        console.log(product)
+        let id = product._id;
         dispatchCart({
             type: 'delete',
             id
         });
         toast.success('Item Removed from the Cart');
         let newItems = cart.filter((item) => {
-            return item.id !== id
+            return item._id !== id
         });
         localStorage.setItem('cart', JSON.stringify(newItems));
     }
     return (
         <Link>
-            <div className={`lg:flex grid grid-cols-8 mb-3 h-fit pl-4 px-2 border lg:border-b-transparent border-b-slate-300 border-transparent ${cartPage ? "flex-row pb-6" : ""}`}>
+            <div className={`lg:flex grid grid-cols-8 mb-3 h-fit pl-4 px-2 pb-3 border lg:border-b-transparent border-b-slate-300 border-transparent ${cartPage ? "flex-row pb-6" : ""}`}>
                 <div className='lg:min-w-44 lg:max-h-48 col-span-3 max-w-32 max-h-36 md:min-w-64 md:min-h-56 min-w-36 min-h-32 xsm:min-h-40 xmd:min-w-44 xmd:min-h-44'>
-                    <img className='max-w-full xsm:min-w-full min-h-full max-h-full object-cover' src={product.image} alt="ItemImage" />
+                    <img className='max-w-full xsm:min-w-full min-h-full max-h-full object-cover' src={product.images[0]} alt="ItemImage" />
                 </div>
-                <div className={`w-full pl-3 lg:pl-2 py-2 md:space-y-3 space-y-1 ${cartPage ? "lg:flex col-span-4 items-center justify-between lg:px-14" : "block"}`}>
-                    <div className='md:line-clamp-2 line-clamp-2 w-full lg:w-24 font-semibold md:text-xl lg:text-lg text-base'>
+                <div className={`w-full pl-3 lg:pl-2 py-2 col-span-4 md:space-y-3 space-y-1 ${cartPage ? "lg:flex col-span-4 items-center justify-between lg:px-14" : "block"}`}>
+                    <div className='line-clamp-2 w-full lg:w-24 font-semibold md:text-xl lg:text-lg text-base'>
                         {
                             product.title
                         }
@@ -82,7 +86,7 @@ const CartProduct = ({ product, cartPage }) => {
                             <FaPlus />
                         </div>
                     </div>
-                    <div className={`pl-2 pt-3 cursor-pointer ${cartPage ? "hidden" : "block"} `}><FaRegTrashAlt onClick={() => handleDeleteCart(product.id)} className='text-lg text-slate-600 hover:text-sky-400 duration-100 ease-in-out' /></div>
+                    <div className={`pl-2 pt-3 cursor-pointer ${cartPage ? "hidden" : "block"} `}><FaRegTrashAlt onClick={() => {handleDeleteCart(product)}} className='text-lg text-slate-600 hover:text-sky-400 duration-100 ease-in-out' /></div>
                     <div className={`font-semibold hidden lg:block ${cartPage !== undefined ? 'block' : 'hidden'}`}>
                         Rs.{
                             product.salePrice * product.qty

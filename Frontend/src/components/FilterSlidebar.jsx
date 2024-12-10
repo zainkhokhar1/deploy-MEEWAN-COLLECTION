@@ -7,6 +7,7 @@ const FilterSlidebar = () => {
   const [range, setRange] = useState(0);
   const [filterOpen, setFilterOpen] = useFilter();
   const [selectedSizes, setSelectedSizes] = useState([]);
+  filterOpen ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto";
   const sizes = [
     "XX-Small",
     "X-Small",
@@ -24,7 +25,6 @@ const FilterSlidebar = () => {
     "46",
     "48"
   ];
-  console.log(filterOpen)
   const handleCheckboxChange = (size) => {
     setSelectedSizes((prevSelected) =>
       prevSelected.includes(size)
@@ -38,7 +38,7 @@ const FilterSlidebar = () => {
   }
   return (
     <>
-      <div className={`absolute md:w-5/12 lg:w-3/12 lg:duration-1000 bg-white z-[999] w-11/12 duration-700 top-0 h-svh overflow-y-auto ${filterOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
+      <div className={`absolute h-screen md:w-5/12 lg:w-3/12 lg:duration-1000 bg-white z-[999] w-11/12 duration-700 top-0 overflow-y-auto ${filterOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
         <div className=' w-full relative h-[40rem]'>
           <div className=' sticky w-full top-0 bg-white z-30 mb-6 text-base font-semibold flex timeline-center justify-between py-4 px-3 border-transparent border border-b-slate-200'>
             <span>FILTER</span>
@@ -88,7 +88,7 @@ const FilterSlidebar = () => {
               <div>
                 <div>
                   <h3 className="title w-fit h-fit px-5">
-                    <div className='font-semibold text-lg relative py-3'>
+                    <div className='font-semibold text-lg relative py-1'>
                       Size
                       <div className=' w-14 h-[2px] left-0 bg-black'></div>
                     </div>
@@ -113,8 +113,12 @@ const FilterSlidebar = () => {
         </div>
       </div>
       {
-          <div className={`fixed top-0 right-0 left-0 ${filterOpen ? "opacity-100" : "opacity-0 hidden"} duration-700 min-h-screen min-w-90% z-[700] bg-black opacity-50`} onClick={() => setFilterOpen(false)}></div>
-       }
+        <div className={`fixed top-0 right-0 left-0 ${filterOpen ? "opacity-100" : "opacity-0 hidden"} duration-700 min-h-screen min-w-90% z-[700] bg-black opacity-50`} onClick={() => {
+          localStorage.setItem('filterSlider', false);
+          setFilterOpen(false)
+        }
+        }></div>
+      }
     </>
   )
 }
