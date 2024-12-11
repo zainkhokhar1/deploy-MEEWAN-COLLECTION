@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RxCross2 } from "react-icons/rx";
 import products from '../dummydata.js';
 import { useFilter } from './ContextApi.jsx';
@@ -7,7 +7,18 @@ const FilterSlidebar = () => {
   const [range, setRange] = useState(0);
   const [filterOpen, setFilterOpen] = useFilter();
   const [selectedSizes, setSelectedSizes] = useState([]);
-  filterOpen ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto";
+
+  // using useEffect to check for if this slider is opened or not and do the accordingly functionality
+  useEffect(() => {
+    if (filterOpen) {
+      document.body.style.overflow = "hidden";
+    }
+    else {
+      document.body.style.overflow = "auto";
+    }
+    // dispatching the event acttached when this component is open
+    return () => document.body.style.overflow = "auto";
+  }, [filterOpen])
   const sizes = [
     "XX-Small",
     "X-Small",
@@ -38,7 +49,7 @@ const FilterSlidebar = () => {
   }
   return (
     <>
-      <div className={`absolute h-screen md:w-5/12 lg:w-3/12 lg:duration-1000 bg-white z-[999] w-11/12 duration-700 top-0 overflow-y-auto ${filterOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
+      <div className={`absolute min-h-screen md:w-5/12 lg:w-3/12 lg:duration-1000 bg-white z-[999] w-11/12 duration-700 top-0 overflow-y-auto ${filterOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
         <div className=' w-full relative h-[40rem]'>
           <div className=' sticky w-full top-0 bg-white z-30 mb-6 text-base font-semibold flex timeline-center justify-between py-4 px-3 border-transparent border border-b-slate-200'>
             <span>FILTER</span>

@@ -14,7 +14,7 @@ const reducer = (state, action) => {
         case "add":
             return [...state, action.payload];
         case "delete":
-            return state.filter((single) => single._id !== action.payload._id);
+            return state.filter((single) => single._id !== action.payload);
         default: return state
     }
 }
@@ -46,7 +46,7 @@ export const SideBarProvider = ({ children }) => {
     const [filterOpen, setFilterOpen] = useState(localStorage.getItem('filterSlider') === "true" ? localStorage.getItem('filterSlider') : null);
     const [wishList, dispatch] = useReducer(reducer, JSON.parse(localStorage.getItem('wishListCart')) || []);
     const [sort, setSort] = useState(localStorage.getItem('Sort') === "true" ? localStorage.getItem('Sort') : null);
-    const [openSearch, setOpenSearch] = useState(localStorage.getItem('Search') === "true" ? localStorage.getItem('Search') : null);
+    const [openSearch, setOpenSearch] = useState(localStorage.getItem('Search') === "true" ? localStorage.getItem('Search') : false);
     const [showCart, setShowCart] = useState(false);
     const [cart, dispatchCart] = useReducer(reducer1, initialState());
 

@@ -34,9 +34,7 @@ const CartProduct = ({ product, cartPage }) => {
         localStorage.setItem('cart', JSON.stringify(cartItems));
     }
 
-    const handleDeleteCart = (product) => {
-        console.log(product)
-        let id = product._id;
+    const handleDeleteCart = (id) => {
         dispatchCart({
             type: 'delete',
             id
@@ -70,7 +68,7 @@ const CartProduct = ({ product, cartPage }) => {
                                 updateQuantityMinus(product);
                             }
                             else {
-                                handleDeleteCart(product.id);
+                                handleDeleteCart(product._id);
                             }
                         }}>
                             {
@@ -86,7 +84,10 @@ const CartProduct = ({ product, cartPage }) => {
                             <FaPlus />
                         </div>
                     </div>
-                    <div className={`pl-2 pt-3 cursor-pointer ${cartPage ? "hidden" : "block"} `}><FaRegTrashAlt onClick={() => {handleDeleteCart(product)}} className='text-lg text-slate-600 hover:text-sky-400 duration-100 ease-in-out' /></div>
+                    <div onClick={() => {
+                        handleDeleteCart(product._id)
+                    }}
+                        className={`pl-2 pt-3 cursor-pointer ${cartPage ? "hidden" : "block"} `}><FaRegTrashAlt className='text-lg text-slate-600 hover:text-sky-400 duration-100 ease-in-out' /></div>
                     <div className={`font-semibold hidden lg:block ${cartPage !== undefined ? 'block' : 'hidden'}`}>
                         Rs.{
                             product.salePrice * product.qty

@@ -8,7 +8,7 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaYoutube } from "react-icons/fa6";
 import usePreviousPath from '../components/usePreviousPath.jsx';
 const Home = () => {
-  const prevLocation = usePreviousPath();
+  // const prevLocation = usePreviousPath();
   return (
     <>
       <div className="h-auto">

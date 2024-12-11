@@ -1,11 +1,23 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RxCross2 } from "react-icons/rx";
 import { useSideBar } from './ContextApi';
 import { Link } from 'react-router-dom';
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useSideBar();
-    isOpen ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto";
+
+    // useEffect to control the overflow of the component/slider
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        }
+        else {
+            document.body.style.overflow = "auto";
+        }
+
+        return () => document.body.style.overflow = "auto";
+    }, [isOpen]);
+    
     return (
         <>
             <div className={`absolute z-50 top-0 rounded-l-xl duration-700 bg-white md:w-1/3 w-10/12 h-screen border border-slate-200 ${isOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
@@ -82,7 +94,7 @@ const Sidebar = () => {
                     <RxCross2 />
                 </div>
             </div>
-             <div className={`fixed top-0 right-0 left-0 ${isOpen ? "opacity-25" : "opacity-0 hidden"} duration-700 min-h-screen min-w-90% z-10 bg-black `} onClick={() => {
+            <div className={`fixed top-0 right-0 left-0 ${isOpen ? "opacity-25" : "opacity-0 hidden"} duration-700 min-h-screen min-w-90% z-10 bg-black `} onClick={() => {
                 localStorage.setItem('isOpen', false);
                 setIsOpen(false);
             }}></div>

@@ -10,7 +10,6 @@ const CartPageItem = () => {
     let totalPrice = cart.reduce((prev, current) => {
         return prev += current.salePrice * current.qty
     }, 0);
-    console.log(agreed)
     return (
         <div className='w-full'>
             <div className='hidden lg:flex flex-col lg:flex-row w-full lg:justify-between lg:items-center px-24 font-semibold border pb-4 border-transparent border-b-slate-200'>

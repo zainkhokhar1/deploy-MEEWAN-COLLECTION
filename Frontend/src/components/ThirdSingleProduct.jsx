@@ -14,8 +14,9 @@ const ThirdSingleProduct = ({ singleProduct, wish }) => {
   const handleRemoveWishItem = (singleProduct) => {
     dispatch({
       type: 'delete',
-      payload: singleProduct
+      payload: singleProduct._id
     });
+    setLike(false);
     toast.success("Removed item from the wishList");
   }
   const handleLike = () => {
@@ -27,18 +28,23 @@ const ThirdSingleProduct = ({ singleProduct, wish }) => {
   }
   useEffect(() => {
     if (wishList.length > 0 && singleProduct) {
-      const checking = wishList.some(singleItem => singleItem.id == singleProduct.id);
+      const checking = wishList.some(singleItem => singleItem._id == singleProduct._id);
       setLike(checking);
     }
   }, [wishList]);
+  if (singleProduct === undefined) {
+    return <div className='h-screen w-screen flex items-center justify-center text-purple-700'>
+      <span className="loading loading-bars loading-xl"></span>
+    </div>
+  }
   return (
     <div className='w-full overflow-hidden line-clamp-3 pb-3'>
       <div className='relative w-full h-[22rem]'>
         <Link to={`/product/${singleProduct.id}`}>
-          <img className='w-full h-full object-cover' src={singleProduct.image} alt="Image" />
+          <img className='w-full h-full object-cover' src={singleProduct.images[0]} alt="Image" />
         </Link>
         <div className='px-[5px] py-[10px] text-xs rounded-full bg-[#ff4e00] text-white absolute top-3 right-2'>
-          {singleProduct.discount}
+        {Math.round((((singleProduct.originalPrice - singleProduct.salePrice) / singleProduct.originalPrice) * 100))}%
         </div>
         {
           wish ? <Link onClick={() => handleRemoveWishItem(singleProduct)} className='text-lg absolute top-3 left-2 bg-white rounded-full px-1 py-1 w-fit h-fit '>

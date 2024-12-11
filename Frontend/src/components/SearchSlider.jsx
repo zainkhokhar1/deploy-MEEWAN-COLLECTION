@@ -29,7 +29,7 @@ const SearchSlider = () => {
                 </div>
             </div>
             {
-                openSearch && <div className='fixed inset-0 min-h-screen min-w-screen z-[700] bg-black opacity-50' onClick={() => setOpenSearch(false)}></div>
+                openSearch && <div className='fixed inset-0 min-h-screen min-w-screen z-[700] bg-black opacity-50' onClick={() => { setOpenSearch(false); localStorage.removeItem("Search"); }}></div>
             }
         </>
     )

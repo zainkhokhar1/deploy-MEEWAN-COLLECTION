@@ -19,6 +19,7 @@ connectMongoDB();
 app.listen(port, () => {
     console.log("Listening on the port " + port);
 });
+// basic entry route for checking
 app.get('/', (req, res) => {
     res.send("Listening on /");
 })
