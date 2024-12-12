@@ -1,12 +1,15 @@
 
 import React from 'react'
-import { useAddCart, useWishlist } from './ContextApi';
+import { useAddCart, useSearch, useWishlist } from './ContextApi';
 import { Link } from 'react-router-dom';
+
 const Footer = () => {
     const [wishList, dispatch] = useWishlist();
     const [cart, dispatchCart] = useAddCart();
+    const [openSearch, setOpenSearch] = useSearch();
+
     return (
-        <div className='sticky bottom-0 h-14 pt-1 xl:hidden flex items-center justify-between w-full shadow-lg bg-white'>
+        <div className='sticky bottom-0 z-[800] h-14 pt-1 xl:hidden flex items-center justify-between w-full shadow-lg bg-white'>
             <Link to='/collections/all' className='text-center flex flex-col items-center w-16 '>
                 <svg className='w-5' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                 <span className='text-[12px] font-bold'>
@@ -38,13 +41,13 @@ const Footer = () => {
                     }
                 </span>
             </Link>
-            <div className='text-center flex flex-col items-center w-16'>
+            <Link className='text-center flex flex-col items-center w-16' to='/login'>
                 <svg className='w-5' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 <span className='text-[12px] font-bold'>
                     Account
                 </span>
-            </div>
-            <div className='text-center flex flex-col items-center w-16'>
+            </Link>
+            <div className='text-center flex flex-col items-center w-16' onClick={() => { setOpenSearch(true); localStorage.setItem("Search", true); }}>
                 <svg className='w-5' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 <span className='text-[12px] font-bold'>
                     Search

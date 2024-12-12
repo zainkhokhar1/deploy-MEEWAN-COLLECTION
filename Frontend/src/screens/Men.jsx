@@ -9,7 +9,7 @@ import { FaYoutube } from 'react-icons/fa6';
 import SecondSingleProduct from '../components/SecondSingleProduct';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import usePreviousPath from '../components/usePreviousPath';
-import { useFilter, useSideBar, useSort } from '../components/ContextApi';
+import { useFilter, useSideBar, useSort, useSortBy } from '../components/ContextApi';
 import { MdKeyboardArrowDown } from "react-icons/md";
 import axios from 'axios';
 
@@ -21,6 +21,7 @@ const Men = () => {
   const [mens, setMens] = useState([]);
   const [option, setOption] = useState(1);
   const [filter, setFilter] = useState('');
+  const [sortBy, setSortBy] = useSortBy();
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
@@ -30,7 +31,39 @@ const Men = () => {
     localStorage.setItem('Sort', true);
     setSort(true);
   }
-
+  useEffect(() => {
+    if (sortBy === "Alphabetically, A-Z") {
+      let newProducts = [...mens].sort((a, b) => {
+        return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
+      });
+      setMens(newProducts);
+    }
+    else if (sortBy === "Alphabetically, Z-A") {
+      let newProducts = [...mens].sort((a, b) => {
+        return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
+      });
+      setMens(newProducts);
+    }
+    else if (sortBy === "Price, low to high") {
+      let newProducts = [...mens].sort((a, b) => {
+        return b.salePrice < a.salePrice ? 1 : -1
+      });
+      setMens(newProducts);
+    }
+    else if (sortBy === "Price, high to low") {
+      let newProducts = [...mens].sort((a, b) => {
+        return b.salePrice < a.salePrice ? -1 : 1
+      });
+      setMens(newProducts);
+    }
+    else if (sortBy === "Featured") {
+      getMensProduct();
+    }
+    else {
+      //skip the others for now
+    }
+  }, [sortBy]);
+  // Changing products based on the filter
   useEffect(() => {
     if (filter === "Alphabetically, A-Z") {
       let newProducts = [...mens].sort((a, b) => {
@@ -57,10 +90,7 @@ const Men = () => {
       setMens(newProducts);
     }
     else if (filter === "Featured") {
-      let filteredProducts = products.filter((product) => {
-        return product.category === "Men" || product.category.includes('Men')
-      });
-      setMens(filteredProducts);
+      getMensProduct();
     }
     else {
       //skip the others for now

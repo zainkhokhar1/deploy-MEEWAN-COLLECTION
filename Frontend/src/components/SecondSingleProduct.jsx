@@ -12,8 +12,9 @@ const SecondSingleProduct = ({ singleProduct, wish }) => {
     const handleRemoveWishItem = (singleProduct) => {
         dispatch({
             type: 'delete',
-            payload: singleProduct
+            payload: singleProduct._id
         });
+        setLike(false);
         toast.success("Removed item from the wishList");
     }
     const handleLike = () => {
@@ -38,7 +39,7 @@ const SecondSingleProduct = ({ singleProduct, wish }) => {
                         <img className='w-full h-full object-cover' src={singleProduct.images[0]} alt="Image" />
                     </Link>
                     <div className='px-[5px] py-[10px] text-xs rounded-full bg-[#ff4e00] text-white absolute top-3 right-2'>
-                    {Math.round((((singleProduct.originalPrice - singleProduct.salePrice) / singleProduct.originalPrice) * 100))}%
+                        {Math.round((((singleProduct.originalPrice - singleProduct.salePrice) / singleProduct.originalPrice) * 100))}%
                     </div>
                     {
                         wish ? <Link onClick={() => handleRemoveWishItem(singleProduct)} className='text-lg absolute top-3 left-2 bg-white rounded-full px-1 py-1 w-fit h-fit '>

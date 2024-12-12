@@ -8,11 +8,12 @@ import { FaInstagram } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa6';
 import SecondSingleProduct from '../components/SecondSingleProduct';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
-import { useFilter, useSideBar, useSort } from '../components/ContextApi';
+import { useFilter, useSideBar, useSort, useSortBy } from '../components/ContextApi';
 import axios from 'axios';
 
 const Kids = () => {
   const [filterOpen, setFilterOpen] = useFilter();
+  const [sortBy, setSortBy] = useSortBy();
   const [filter, setFilter] = useState('');
   const [kids, setKids] = useState([]);
   const [isOpen, setIsOpen] = useSideBar();
@@ -25,7 +26,40 @@ const Kids = () => {
     localStorage.setItem('Sort', true);
     setSort(true);
   }
-
+  //Changing based on the value of sortBy
+  useEffect(() => {
+    if (sortBy === "Alphabetically, A-Z") {
+      let newProducts = [...kids].sort((a, b) => {
+        return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
+      });
+      setKids(newProducts);
+    }
+    else if (sortBy === "Alphabetically, Z-A") {
+      let newProducts = [...kids].sort((a, b) => {
+        return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
+      });
+      setKids(newProducts);
+    }
+    else if (sortBy === "Price, low to high") {
+      let newProducts = [...kids].sort((a, b) => {
+        return b.salePrice < a.salePrice ? 1 : -1
+      });
+      setKids(newProducts);
+    }
+    else if (sortBy === "Price, high to low") {
+      let newProducts = [...kids].sort((a, b) => {
+        return b.salePrice < a.salePrice ? -1 : 1
+      });
+      setKids(newProducts);
+    }
+    else if (sortBy === "Featured") {
+      getKidsProduct();
+    }
+    else {
+      //skip the others for now
+    }
+  }, [sortBy]);
+  // Getting all the products based on a filter
   useEffect(() => {
     if (filter === "Alphabetically, A-Z") {
       let newProducts = [...kids].sort((a, b) => {

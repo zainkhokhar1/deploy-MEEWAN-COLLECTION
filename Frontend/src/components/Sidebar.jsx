@@ -2,9 +2,11 @@
 import React, { useEffect } from 'react';
 import { RxCross2 } from "react-icons/rx";
 import { useSideBar } from './ContextApi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { IoMdLogOut } from 'react-icons/io';
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useSideBar();
+    const Navigate = useNavigate();
 
     // useEffect to control the overflow of the component/slider
     useEffect(() => {
@@ -17,7 +19,7 @@ const Sidebar = () => {
 
         return () => document.body.style.overflow = "auto";
     }, [isOpen]);
-    
+
     return (
         <>
             <div className={`absolute z-50 top-0 rounded-l-xl duration-700 bg-white md:w-1/3 w-10/12 h-screen border border-slate-200 ${isOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
@@ -74,12 +76,18 @@ const Sidebar = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                         <span>Search</span>
                     </h3>
-                    <Link to='/login'>
+                    <Link to='/login' className={`${localStorage.getItem('token') ? "hidden" : "block"}`}>
                         <h3 className='text-base pl-5 pt-3 h-12 border-b-slate-200 border-b flex items-center pb-2 gap-1'>
                             <svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                             <span>Login / Register</span>
                         </h3>
                     </Link>
+                    <div className={`${localStorage.getItem('token') ? "block" : "hidden"}`} onClick={() => { localStorage.removeItem('token'); Navigate('/login'); toast.success('Logged out !') }}>
+                        <h3 className='text-base pl-5 pt-3 h-12 border-b-slate-200 border-b flex items-center pb-2 gap-1'>
+                            <IoMdLogOut className='text-xl' />
+                            <span>Logout</span>
+                        </h3>
+                    </div>
                     <div className='text-sm font-medium text-slate-700 pt-5 pl-5'>
                         Need help?
                     </div>

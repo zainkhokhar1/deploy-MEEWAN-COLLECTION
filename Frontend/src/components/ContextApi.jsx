@@ -8,6 +8,7 @@ export const sortContext = createContext();
 export const searchContext = createContext();
 export const cartContext = createContext();
 export const showCartContext = createContext();
+export const sortByContext = createContext();
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -49,6 +50,7 @@ export const SideBarProvider = ({ children }) => {
     const [openSearch, setOpenSearch] = useState(localStorage.getItem('Search') === "true" ? localStorage.getItem('Search') : false);
     const [showCart, setShowCart] = useState(false);
     const [cart, dispatchCart] = useReducer(reducer1, initialState());
+    const [sortBy, setSortBy] = useState(localStorage.getItem('sort') || '');
 
     useEffect(() => {
 
@@ -60,6 +62,9 @@ export const SideBarProvider = ({ children }) => {
         }
     }, [wishList]);
 
+    useEffect(() => {
+        localStorage.setItem('sort', sortBy)
+    }, [sortBy])
     // useEffect(() => {
     //     if (cart.length > 0) {
     //         localStorage.setItem('Cart', JSON.stringify(cart));
@@ -70,21 +75,23 @@ export const SideBarProvider = ({ children }) => {
     // }, [cart]);
 
     return (
-        <showCartContext.Provider value={[showCart, setShowCart]}>
-            <cartContext.Provider value={[cart, dispatchCart]}>
-                <searchContext.Provider value={[openSearch, setOpenSearch]}>
-                    <sortContext.Provider value={[sort, setSort]}>
-                        <filterContext.Provider value={[filterOpen, setFilterOpen]}>
-                            <sideBarContext.Provider value={[isOpen, setIsOpen]}>
-                                <wishListContext.Provider value={[wishList, dispatch]} >
-                                    {children}
-                                </wishListContext.Provider>
-                            </sideBarContext.Provider>
-                        </filterContext.Provider>
-                    </sortContext.Provider>
-                </searchContext.Provider>
-            </cartContext.Provider>
-        </showCartContext.Provider>
+            <sortByContext.Provider value={[sortBy, setSortBy]}>
+                <showCartContext.Provider value={[showCart, setShowCart]}>
+                    <cartContext.Provider value={[cart, dispatchCart]}>
+                        <searchContext.Provider value={[openSearch, setOpenSearch]}>
+                            <sortContext.Provider value={[sort, setSort]}>
+                                <filterContext.Provider value={[filterOpen, setFilterOpen]}>
+                                    <sideBarContext.Provider value={[isOpen, setIsOpen]}>
+                                        <wishListContext.Provider value={[wishList, dispatch]} >
+                                            {children}
+                                        </wishListContext.Provider>
+                                    </sideBarContext.Provider>
+                                </filterContext.Provider>
+                            </sortContext.Provider>
+                        </searchContext.Provider>
+                    </cartContext.Provider>
+                </showCartContext.Provider>
+            </sortByContext.Provider>
     )
 }
 
@@ -95,3 +102,4 @@ export const useSort = () => useContext(sortContext);
 export const useSearch = () => useContext(searchContext);
 export const useCart = () => useContext(showCartContext);
 export const useAddCart = () => useContext(cartContext);
+export const useSortBy = () => useContext(sortByContext);

@@ -8,7 +8,7 @@ import { FaInstagram } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa6';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import SecondSingleProduct from '../components/SecondSingleProduct';
-import { useFilter, useSideBar, useSort } from '../components/ContextApi';
+import { useFilter, useSideBar, useSort, useSortBy } from '../components/ContextApi';
 import axios from 'axios';
 
 const WinterCollection = () => {
@@ -18,6 +18,8 @@ const WinterCollection = () => {
   const [winterCollection, setWinterCollection] = useState([]);
   const [option, setOption] = useState(1);
   const [sort, setSort] = useSort();
+  const [sortBy, setSortBy] = useSortBy();
+
   const handleFilter = (e) => {
     setFilter(e.target.value);
   }
@@ -25,7 +27,43 @@ const WinterCollection = () => {
     localStorage.setItem('Sort', true);
     setSort(true);
   }
-
+  // Getting all the products based on the sortBy
+  useEffect(() => {
+    if (sortBy === "Alphabetically, A-Z") {
+      let newProducts = [...winterCollection].sort((a, b) => {
+        return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
+      });
+      setWinterCollection(newProducts);
+    }
+    else if (sortBy === "Alphabetically, Z-A") {
+      let newProducts = [...winterCollection].sort((a, b) => {
+        return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
+      });
+      setWinterCollection(newProducts);
+    }
+    else if (sortBy === "Price, low to high") {
+      let newProducts = [...winterCollection].sort((a, b) => {
+        return b.salePrice < a.salePrice ? 1 : -1
+      });
+      setWinterCollection(newProducts);
+    }
+    else if (sortBy === "Price, high to low") {
+      let newProducts = [...winterCollection].sort((a, b) => {
+        return b.salePrice < a.salePrice ? -1 : 1
+      });
+      setWinterCollection(newProducts);
+    }
+    else if (sortBy === "Featured") {
+      let filteredProducts = products.filter((product) => {
+        return product.category === "Kids" || product.category.includes('Kids')
+      });
+      setWinterCollection(filteredProducts);
+    }
+    else {
+      //skip the others for now
+    }
+  }, [sortBy]);
+  // Getting all the products based on the filter
   useEffect(() => {
     if (filter === "Alphabetically, A-Z") {
       let newProducts = [...winterCollection].sort((a, b) => {

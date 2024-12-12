@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { connectMongoDB } from './ConnectMongo.js';
 import cors from 'cors';
 import ProductRoute from './Routes/ProductRoute.js';
+import UserRoute from './Routes/UserRoute.js'
 const app = express();
 
 dotenv.config();
@@ -27,3 +28,6 @@ app.get('/', (req, res) => {
 // Routes 
 // ---------->>>> PRODUCT ROUTE -----------------------<<<< //
 app.use('/product', ProductRoute);
+
+// ---------->>>> USER ROUTE --------------------------<<<<< //
+app.use('/user',UserRoute);

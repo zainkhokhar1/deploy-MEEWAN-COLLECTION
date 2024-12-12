@@ -3,7 +3,6 @@ import Product from "../Models/ProductModel.js";
 
 export const createProduct = async (req, res) => {
     try {
-        console.log(req.body)
         const {
             title,
             description,
@@ -37,7 +36,6 @@ export const createProduct = async (req, res) => {
 export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find();
-        console.log(products);
         if (products) {
             res.status(200).json({ products, success: true });
         }
@@ -63,7 +61,6 @@ export const deleteProduct = async (req, res) => {
 
 export const getSingleProduct = async (req, res) => {
     let { id } = req.params;
-    console.log(id)
     try {
         let product = await Product.find({ _id: id });
         if (product) {
@@ -79,7 +76,6 @@ export const getSingleProduct = async (req, res) => {
 export const getSpecificCategory = async (req, res) => {
     try {
         let { category } = req.params;
-        console.log(category);
         let products = await Product.find({ category });
         if (products) {
             return res.status(200).json({ products, success: true });

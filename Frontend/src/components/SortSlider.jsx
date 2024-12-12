@@ -1,18 +1,19 @@
 
 import React, { useEffect, useState } from 'react';
 import { RxCross2 } from "react-icons/rx";
-import { useSort } from './ContextApi';
+import { useSort, useSortBy } from './ContextApi';
 const SortSlider = () => {
-    const [sortBy, setSortBy] = useState('');
+    const [sortBy, setSortBy] = useSortBy();
     const [sort, setSort] = useSort();
+
     // useEffect to check the sort slider is opened or not
     useEffect(() => {
-        if (sort) { document.body.style.overflow = 'hidden'; } 
+        if (sort) { document.body.style.overflow = 'hidden'; }
         else {
             document.body.style.overflow = 'auto';
         }
         return () => { document.body.style.overflow = 'auto'; };
-    }, [sort]);
+    }, [sort,sortBy]);
     return (
         <>
             <div className={`bg-white top-[7rem] z-[999] min-h-[28rem] ${sort ? " opacity-100 scale-100 translate-y-0" : "opacity-0 scale-0 translate-y-48 pointer-events-none"} duration-500 w-full absolute z-30`}>

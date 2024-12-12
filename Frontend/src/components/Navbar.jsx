@@ -6,17 +6,21 @@ import Sidebar from './Sidebar';
 import { useAddCart, useCart, useSearch, useSideBar, useWishlist } from './ContextApi';
 import { IoMdHeartEmpty } from "react-icons/io";
 import { LiaUser } from "react-icons/lia";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FilterSlidebar from './FilterSlidebar.jsx';
 import SortSlider from './SortSlider.jsx';
 import SearchSlider from './SearchSlider.jsx';
 import CartSlider from './CartSlider.jsx';
+import toast from 'react-hot-toast';
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useSideBar();
     const [cart, dispatchCart] = useAddCart();
     const [openSearch, setOpenSearch] = useSearch();
     const [wishList, dispatch] = useWishlist();
     const [showCart, setShowCart] = useCart();
+    const Navigate = useNavigate();
+
     return (
         <div className='text-[12px] relative'>
             {/* Navbar upper part will be displayed in the next given div element */}
@@ -59,10 +63,15 @@ const Navbar = () => {
                     <Link className='hover:text-sky-700 duration-300' to='/collections/winter'>Winter</Link>
                 </div>
                 <div className='w-1/3 flex items-center justify-center xl:order-3'>
-                    <GoSearch onClick={() => { setOpenSearch(true); localStorage.setItem("Search", true); }} className='text-2xl cursor-pointer ml-6 md:ml-14 lg:ml-28 xl:ml-52 text-slate-800' />
-                    <LiaUser className='text-2xl ml-3 text-slate-800 hidden md:block' />
+                    <GoSearch onClick={() => { setOpenSearch(true); localStorage.setItem("Search", true); }} className='text-2xl cursor-pointer ml-6 md:ml-14 lg:ml-28 xl:ml-52 text-slate-800 hover:text-purple-500 hover:rotate-6 duration-200 block' />
+                    <Link to='/login'>
+                        <LiaUser className={`${localStorage.getItem('token') ? "hidden" : "md:block"} text-2xl ml-3 text-slate-800 hover:text-purple-500 hover:rotate-6 hover:scale-125 duration-200 cursor-pointer`} />
+                    </Link>
+                    {/* <button className={`${localStorage.getItem('token') ? 'block' : 'hidden'} px-1 py-2 rounded-md text-xs text-white bg-gray-800 hover:bg-gray-900 ml-1`} onClick={()=>{localStorage.removeItem('token'); Navigate('/login');toast.success('Logged out !')}}>
+                        Lougout
+                    </button> */}
                     <Link to='/wishlist' className='relative w-fit h-fit hidden md:block'>
-                        <IoMdHeartEmpty className='text-2xl -mt-1 ml-4 text-slate-800' />
+                        <IoMdHeartEmpty className='text-2xl -mt-1 ml-4 text-slate-800 hover:text-purple-500 hover:scale-110 hover:rotate-12 duration-200' />
                         <span className='bg-black absolute -top-2 left-8 text-white px-[5px] text-[10px] rounded-full'>
                             {
                                 wishList.length
@@ -72,7 +81,7 @@ const Navbar = () => {
                     <div className='relative w-fit h-fit cursor-pointer' onClick={() => {
                         showCart ? setShowCart(false) : setShowCart(true);
                     }}>
-                        <LiaShoppingBagSolid className='text-2xl -mt-1 ml-4 text-slate-800' />
+                        <LiaShoppingBagSolid className='text-2xl -mt-1 ml-4 text-slate-800 hover:text-purple-500 hover:rotate-6 hover:scale-110 duration-200' />
                         <span className='bg-black absolute -top-2 left-8 text-white px-[5px] text-[10px] rounded-full'>
                             {
                                 cart.length

@@ -18,11 +18,11 @@ const PreviewItem = () => {
     const [wishList, dispatch] = useWishlist();
     const [cart, dispatchCart] = useAddCart();
     const [products, setProducts] = useState([]);
-    const [size, setSize] = useState(0);
     const { id } = useParams();
     const [qty, setQty] = useState(1);
     const [like, setLike] = useState(false);
     const [product, setProduct] = useState([]);
+    const [size, setSize] = useState(0);
     const [newProducts, setNewProducts] = useState([]);
     const [recentlyViewed, setRecentlyViewed] = useState(localStorage.getItem('recentlyViewed') ? JSON.parse(localStorage.getItem('recentlyViewed')) : []);
     const [recentlyViewedProducts, setRecentlyViewedProducts] = useState([]);
@@ -162,6 +162,7 @@ const PreviewItem = () => {
             if (product.data.success) {
                 setProduct(product.data.product);
                 setImageSelected(product.data.product[0].images[0]);
+                setSize(product.data.product[0].sizes[0]);
             }
         }
         catch (e) {
@@ -218,7 +219,8 @@ const PreviewItem = () => {
 
     // Adding item to the cart handler Function
     const addToCart = (product) => {
-        let addedProduct = { ...product, qty };
+        let sizes = size;
+        let addedProduct = { ...product, qty, sizes };
         let condition = cart.some((singleItem) => {
             return addedProduct._id === singleItem._id
         });
@@ -247,7 +249,8 @@ const PreviewItem = () => {
     // Fetching all the products from the backend
     const getAllProducts = async () => {
         try {
-            let allProducts = await axios.get('http://localhost:3001/product/all');
+            let token = localStorage.getItem('token') || '';
+            let allProducts = await axios.post('http://localhost:3001/product/all', { token });
             if (allProducts.data.success) {
                 setProducts(allProducts.data.products);
                 setNewProducts(allProducts.data.products);
@@ -293,8 +296,8 @@ const PreviewItem = () => {
                                         product[0].title
                                     }
                                 </h3>
-                                <div className='flex gap-6'>
-                                    <h3 className='line-through text-slate-500 text-2xl'>
+                                <div className='flex gap-6 items-center'>
+                                    <h3 className='line-through text-slate-500 text-xl'>
                                         Rs.{
                                             product[0].originalPrice
                                         }

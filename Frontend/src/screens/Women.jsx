@@ -9,7 +9,7 @@ import { FaYoutube } from 'react-icons/fa6';
 import SecondSingleProduct from '../components/SecondSingleProduct';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import usePreviousPath from '../components/usePreviousPath';
-import { useFilter, useSideBar, useSort } from '../components/ContextApi';
+import { useFilter, useSideBar, useSort, useSortBy } from '../components/ContextApi';
 import axios from 'axios';
 
 const Women = () => {
@@ -20,6 +20,8 @@ const Women = () => {
   const [option, setOption] = useState(1);
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useSort();
+  const [sortBy, setSortBy] = useSortBy();
+
   const handleFilter = (e) => {
     setFilter(e.target.value);
   }
@@ -27,7 +29,44 @@ const Women = () => {
     localStorage.setItem('Sort', true);
     setSort(true);
   }
+  // Getting all the products based on the SortBy condition
+  useEffect(() => {
+    if (sortBy === "Alphabetically, A-Z") {
+      let newProducts = [...womens].sort((a, b) => {
+        return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
+      });
+      setWomens(newProducts);
+    }
+    else if (sortBy === "Alphabetically, Z-A") {
+      let newProducts = [...womens].sort((a, b) => {
+        return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
+      });
+      setWomens(newProducts);
+    }
+    else if (sortBy === "Price, low to high") {
+      let newProducts = [...womens].sort((a, b) => {
+        return b.salePrice < a.salePrice ? 1 : -1
+      });
+      setWomens(newProducts);
+    }
+    else if (sortBy === "Price, high to low") {
+      let newProducts = [...womens].sort((a, b) => {
+        return b.salePrice < a.salePrice ? -1 : 1
+      });
+      setWomens(newProducts);
+    }
+    else if (sortBy === "Featured") {
+      let filteredProducts = products.filter((product) => {
+        return product.category === "Women" || product.category.includes('Women')
+      });
+      setWomens(filteredProducts);
+    }
+    else {
+      //skip the others for now
+    }
+  }, [sortBy]);
 
+  // Getting all the products based on the filter condition
   useEffect(() => {
     if (filter === "Alphabetically, A-Z") {
       let newProducts = [...womens].sort((a, b) => {

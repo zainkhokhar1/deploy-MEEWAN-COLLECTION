@@ -2,19 +2,26 @@
 import React, { useEffect, useState } from 'react'
 import SingleProduct from './SingleProduct';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Latestproduct = () => {
     const [products, setProducts] = useState([]);
+    const Navigate = useNavigate();
 
     // Fetching all the products from the API Backend
     const fetchProducts = async () => {
+        let token = localStorage.getItem('token') || '';
         try {
-            let products = await axios.get('http://localhost:3001/product/all');
+            let products = await axios.post('http://localhost:3001/product/all', { token });
             if (products.data.success) {
                 setProducts(products.data.products);
             }
         }
         catch (e) {
+            toast.error('login first to visit this page');
+            localStorage.removeItem('token');
+            Navigate('/login');
             console.log(e.message);
         }
     }
@@ -35,7 +42,7 @@ const Latestproduct = () => {
                 }
             </div>
         </div> : <div className='h-screen w-screen flex items-center justify-center text-purple-700'>
-        <span className="loading loading-bars loading-xl"></span>
+            <span className="loading loading-bars loading-xl"></span>
         </div>
     )
 }

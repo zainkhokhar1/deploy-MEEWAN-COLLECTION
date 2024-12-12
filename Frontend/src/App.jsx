@@ -18,6 +18,8 @@ import PreviewItem from "./components/PreviewItem";
 import WishListItem from "./components/WishListItem";
 import { FaArrowUp } from "react-icons/fa"; // Import an icon for the button
 import Cart from "./screens/Cart";
+import Login from "./screens/Login";
+import Signup from "./screens/Signup";
 
 function App() {
   const [isVisible, setIsVisible] = useState(false);
@@ -59,6 +61,8 @@ function App() {
           <Route path="/product/:id" element={<PreviewItem />} />
           <Route path="/wishlist" element={<WishListItem />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
         <Toaster />
 

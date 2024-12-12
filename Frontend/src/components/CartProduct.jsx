@@ -48,7 +48,7 @@ const CartProduct = ({ product, cartPage }) => {
     return (
         <Link>
             <div className={`lg:flex grid grid-cols-8 mb-3 h-fit pl-4 px-2 pb-3 border lg:border-b-transparent border-b-slate-300 border-transparent ${cartPage ? "flex-row pb-6" : ""}`}>
-                <div className='lg:min-w-44 lg:max-h-48 col-span-3 max-w-32 max-h-36 md:min-w-64 md:min-h-56 min-w-36 min-h-32 xsm:min-h-40 xmd:min-w-44 xmd:min-h-44'>
+                <div className='lg:min-w-44 lg:max-h-48 col-span-3 max-w-32 max-h-36 md:max-w-64 md:min-h-56 min-w-24 min-h-32 xsm:min-h-40 xmd:min-w-44 xmd:min-h-44'>
                     <img className='max-w-full xsm:min-w-full min-h-full max-h-full object-cover' src={product.images[0]} alt="ItemImage" />
                 </div>
                 <div className={`w-full pl-3 lg:pl-2 py-2 col-span-4 md:space-y-3 space-y-1 ${cartPage ? "lg:flex col-span-4 items-center justify-between lg:px-14" : "block"}`}>
@@ -88,7 +88,7 @@ const CartProduct = ({ product, cartPage }) => {
                         handleDeleteCart(product._id)
                     }}
                         className={`pl-2 pt-3 cursor-pointer ${cartPage ? "hidden" : "block"} `}><FaRegTrashAlt className='text-lg text-slate-600 hover:text-sky-400 duration-100 ease-in-out' /></div>
-                    <div className={`font-semibold hidden lg:block ${cartPage !== undefined ? 'block' : 'hidden'}`}>
+                    <div className={`font-semibold hidden lg:block ${cartPage !== undefined ? 'block' : 'hidden lg:hidden'}`}>
                         Rs.{
                             product.salePrice * product.qty
                         }.00
