@@ -10,7 +10,7 @@ export const jwtCheck = async (req, res, next) => {
             return res.status(401).json({ success: false, message: 'No token provided' });
         };
 
-        let verifcation = jwt.verify(token, process.env.SECRET);
+        jwt.verify(token, process.env.SECRET);
         next();
     }
     catch (e) {

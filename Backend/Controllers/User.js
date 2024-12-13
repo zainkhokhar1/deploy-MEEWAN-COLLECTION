@@ -7,7 +7,6 @@ dotenv.config();
 
 // JWT secret key
 const secret = process.env.SECRET;
-console.log(secret)
 // CREATING A NEW USER IN THE DATABASE
 export const createUser = async (req, res) => {
     try {
@@ -48,7 +47,6 @@ export const loginUser = async (req, res) => {
                 let token = jwt.sign({
                     data: exsistanceCheck[0]?._id
                 }, secret);
-                console.log(token)
                 return res.status(200).json({ success: true, message: "Welcome to MEEWAN Collection", jwtToken: token });
             }
             else {
@@ -57,7 +55,7 @@ export const loginUser = async (req, res) => {
         }
     }
     catch (e) {
+        console .log(e.message);
         return res.status(400).json({ success: false, message: "Error from the backend" });
-        console.log(e.message);
     }
 }

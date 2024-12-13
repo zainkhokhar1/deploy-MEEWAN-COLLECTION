@@ -58,7 +58,7 @@ const products = [
         salePrice: 800,
         ageRange: "1/2 year",
         category: "Women"
-    },
+    }, 
     {
         id: 7,
         image: "https://www.meewancollection.pk/cdn/shop/files/FullSizeRender_25dda456-fbfa-40e6-891f-77545bae99f7.jpg?v=1710511929",

@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const productSchema = Schema({
+const productSchema = new Schema({
     title: {
         type : String,
         required : true,
@@ -48,6 +48,9 @@ const productSchema = Schema({
         type : Array,
         default : []
     }
+},
+{
+    timestamps : true,
 });
 
 const Product = mongoose.model('Product', productSchema);
