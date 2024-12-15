@@ -131,37 +131,37 @@ const Summercollection = () => {
               </span>
             </div>
             <div className='flex gap-3 items-center md:justify-center w-1/3'>
-              <div className='border flex flex-col justify-center space-y-[3px] py-1 border-slate-500 w-8 h-7' onClick={() => setOption(2)}>
+              <div className='border flex flex-col justify-center space-y-[3px] py-1 border-slate-500 w-8 h-7 cursor-pointer' onClick={() => setOption(2)}>
                 <div className={`min-h-[5px] ${option === 2 ? "bg-slate-800" : "bg-[#878787]"} w-10/12 mx-auto pl-1 pr-1`}></div>
                 <div className={`min-h-[5px] ${option === 2 ? "bg-slate-800" : "bg-[#878787]"} w-10/12 mx-auto pl-1 pr-1`}></div>
                 <div className={`min-h-[5px] ${option === 2 ? "bg-slate-800" : "bg-[#878787]"} w-10/12 mx-auto pl-1 pr-1`}></div>
               </div>
-              <div className='border border-slate-500 md:hidden w-8 h-7 p-[2px]' onClick={() => setOption(3)}>
+              <div className='border border-slate-500 md:hidden w-8 h-7 p-[2px] cursor-pointer' onClick={() => setOption(3)}>
                 <div className={`w-full h-full ${option === 3 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
               </div>
-              <div className='border border-slate-400 w-8 h-7 flex gap-1 p-[2px]' onClick={() => setOption(1)}>
+              <div className='border border-slate-400 w-8 h-7 flex gap-1 p-[2px] cursor-pointer' onClick={() => setOption(1)}>
                 <div className={`w-1/2 h-full ${option === 1 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`w-1/2 h-full ${option === 1 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
               </div>
-              <div className='border border-slate-400 w-8 h-7 hidden md:flex gap-1 p-[2px]' onClick={() => setOption(4)}>
+              <div className='border border-slate-400 w-8 h-7 hidden md:flex gap-1 p-[2px] cursor-pointer' onClick={() => setOption(4)}>
                 <div className={`w-1/2 h-full ${option === 4 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`w-1/2 h-full ${option === 4 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`w-1/2 h-full ${option === 4 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
               </div>
-              <div className='border border-slate-400  w-fit h-7 hidden md:flex gap-1 p-[2px]' onClick={() => setOption(5)}>
+              <div className='border border-slate-400  w-fit h-7 hidden md:flex gap-1 p-[2px] cursor-pointer' onClick={() => setOption(5)}>
                 <div className={`min-w-[6px] h-full ${option === 5 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 5 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 5 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 5 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
               </div>
-              <div className='border border-slate-400 w-fit xl:flex xl:gap-1 h-7 hidden p-[2px]' onClick={() => setOption(6)}>
+              <div className='border border-slate-400 w-fit xl:flex xl:gap-1 h-7 hidden p-[2px] cursor-pointer' onClick={() => setOption(6)}>
                 <div className={`min-w-[6px] h-full ${option === 6 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 6 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 6 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 6 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 6 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
               </div>
-              <div className='border border-slate-400 w-fit xl:flex xl:gap-1 h-7 hidden p-[2px]' onClick={() => setOption(7)}>
+              <div className='border border-slate-400 w-fit xl:flex xl:gap-1 h-7 hidden p-[2px] cursor-pointer' onClick={() => setOption(7)}>
                 <div className={`min-w-[6px] h-full ${option === 7 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 7 ? "bg-slate-800" : "bg-[#878787]"}`}></div>
                 <div className={`min-w-[6px] h-full ${option === 7 ? "bg-slate-800" : "bg-[#878787]"}`}></div>

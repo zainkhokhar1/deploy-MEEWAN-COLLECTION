@@ -49,7 +49,7 @@ const FilterSlidebar = () => {
   }
   return (
     <>
-      <div className={`absolute min-h-screen md:w-5/12 lg:w-3/12 lg:duration-1000 bg-white z-[999] w-11/12 duration-700 top-0 overflow-y-auto ${filterOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
+      <div className={`fixed min-h-screen md:w-5/12 lg:w-3/12 lg:duration-1000 bg-white z-[999] w-11/12 duration-700 top-0 overflow-y-auto ${filterOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
         <div className=' w-full relative h-[40rem]'>
           <div className=' sticky w-full top-0 bg-white z-30 mb-6 text-base font-semibold flex timeline-center justify-between py-4 px-3 border-transparent border border-b-slate-200'>
             <span>FILTER</span>

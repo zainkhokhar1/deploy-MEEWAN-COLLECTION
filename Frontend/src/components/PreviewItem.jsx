@@ -33,13 +33,6 @@ const PreviewItem = () => {
         speed: 3000,
         responsive: [
             {
-                breakpoint: 1440,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                },
-            },
-            {
                 breakpoint: 320,
                 settings: {
                     slidesToShow: 2,
@@ -65,6 +58,13 @@ const PreviewItem = () => {
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 2,
+                },
+            },
+            {
+                breakpoint: 1440,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
                 },
             },
         ],
@@ -82,13 +82,6 @@ const PreviewItem = () => {
         speed: 500,
         responsive: [
             {
-                breakpoint: 1440,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                },
-            },
-            {
                 breakpoint: 320,
                 settings: {
                     slidesToShow: 2,
@@ -114,6 +107,13 @@ const PreviewItem = () => {
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 2,
+                },
+            },
+            {
+                breakpoint: 1440,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
                 },
             },
         ],
@@ -233,7 +233,7 @@ const PreviewItem = () => {
                 type: 'update',
                 payload: cartItems,
             });
-            toast.success('Item removed to Cart');
+            toast.success('Item quantity updated in Cart');
         }
         else {
             dispatchCart({

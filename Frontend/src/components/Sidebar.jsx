@@ -22,7 +22,7 @@ const Sidebar = () => {
 
     return (
         <>
-            <div className={`absolute z-50 top-0 rounded-l-xl duration-700 bg-white md:w-1/3 w-10/12 h-screen border border-slate-200 ${isOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
+            <div className={`fixed z-50 top-0 rounded-l-xl duration-700 bg-white md:w-1/3 w-10/12 h-screen border border-slate-200 ${isOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
                 <div className='h-full w-full'>
                     <h1 className='text-lg pl-5 pt-3 h-14 border-b-slate-200 border-b font-bold'>
                         MENU

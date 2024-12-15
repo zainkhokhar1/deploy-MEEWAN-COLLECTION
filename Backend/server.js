@@ -5,13 +5,18 @@ import { connectMongoDB } from './ConnectMongo.js';
 import cors from 'cors';
 import ProductRoute from './Routes/ProductRoute.js';
 import UserRoute from './Routes/UserRoute.js'
-const app = express();
 
+// app creation and configuration of the dotenv 
+const app = express();
 dotenv.config();
+
+// Basic middlewares to get access to the req body and other data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Cross origin allow
 app.use(cors());
+
 const port = process.env.PORT || 3000;
 
 // Making connection to mongodb

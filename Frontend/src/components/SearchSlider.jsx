@@ -38,7 +38,7 @@ const SearchSlider = () => {
     openSearch ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto";
     return (
         <>
-            <div className={`absolute top-0 md:w-5/12 lg:w-4/12 z-[999] overflow-hidden xl:w-3/12 shadow-xl bg-white h-screen duration-1000 ${openSearch ? "right-0" : "-right-[2600px]"} w-11/12`}>
+            <div className={`fixed top-0 md:w-5/12 lg:w-4/12 z-[999] overflow-hidden xl:w-3/12 shadow-xl bg-white h-screen duration-1000 ${openSearch ? "right-0" : "-right-[2600px]"} w-11/12`}>
                 <div>
                     <div className='py-4 px-3 flex justify-between items-center border border-transparent border-b-slate-300'>
                         <span className='font-semibold text-base'>

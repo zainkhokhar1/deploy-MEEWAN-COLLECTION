@@ -20,7 +20,7 @@ const CartSlider = ({ right }) => {
         <>
             
             {
-                cart.length > 0 ? <div className={`absolute duration-300 shadow-xl top-0 z-[999] flex flex-col ${rightval} xl:w-4/12 w-10/12 lg:w-6/12 sm:w-8/12  h-screen bg-white`}>
+                cart.length > 0 ? <div className={`fixed duration-300 shadow-xl top-0 z-[999] flex flex-col ${rightval} xl:w-4/12 w-10/12 lg:w-6/12 sm:w-8/12  h-screen bg-white`}>
                     <div className='flex items-center h-24 border border-transparent border-b-slate-200 py-3'>
                         <div className='absolute right-0 top-4 text-2xl cursor-pointer ease-in-out flex pr-3 justify-end text-black' onClick={() => { setRightVal("-right-[38rem]"); setShowCart(false) }}>
                             <RxCross1 className='' />
@@ -71,7 +71,7 @@ const CartSlider = ({ right }) => {
                             CHECK OUT
                         </Link>
                     </div>
-                </div> : <div className={`absolute duration-300 shadow-xl top-0 z-[999] flex flex-col ${rightval} xl:w-4/12 w-10/12 lg:w-6/12 sm:w-8/12 h-screen bg-white `}>
+                </div> : <div className={`fixed duration-300 shadow-xl top-0 z-[999] flex flex-col ${rightval} xl:w-4/12 w-10/12 lg:w-6/12 sm:w-8/12 h-screen bg-white `}>
                     <div className='flex items-center h-14 border border-transparent border-b-slate-200 py-3'>
                         <div className='absolute right-0 top-4 text-2xl cursor-pointer ease-in-out flex pr-3 justify-end text-black' onClick={() => { setRightVal("-right-[38rem]"); setShowCart(false) }}>
                             <RxCross1 className='' />

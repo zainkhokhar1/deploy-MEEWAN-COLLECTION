@@ -16,7 +16,7 @@ const SortSlider = () => {
     }, [sort,sortBy]);
     return (
         <>
-            <div className={`bg-white top-[7rem] z-[999] min-h-[28rem] ${sort ? " opacity-100 scale-100 translate-y-0" : "opacity-0 scale-0 translate-y-48 pointer-events-none"} duration-500 w-full absolute z-30`}>
+            <div className={`bg-white top-[7rem] z-[999] min-h-[28rem] ${sort ? " opacity-100 scale-100 translate-y-0" : "opacity-0 scale-0 translate-y-48 pointer-events-none"} duration-500 w-full fixed z-30`}>
                 <div>
                     <div className='flex justify-between items-center px-5 py-4 border border-transparent border-b-slate-300'>
                         <span className='text-sm font-semibold'>SORT BY:</span>

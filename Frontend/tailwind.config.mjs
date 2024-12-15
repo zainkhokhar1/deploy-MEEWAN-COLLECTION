@@ -19,10 +19,11 @@ export default {
     },
   },
   plugins: [
-    daisyui,  // No need to use `require`, just add the imported `daisyui`
+    daisyui,
   ],
   daisyui: {
-    themes: false,  // Disable DaisyUI themes
+    themes: true,  // Disable DaisyUI themes
+    darkTheme : "dark"
   },
   darkMode: 'class', // Make sure darkMode is set to 'class' or 'media'
 };
