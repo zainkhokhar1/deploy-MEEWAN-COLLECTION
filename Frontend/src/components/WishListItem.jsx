@@ -9,7 +9,7 @@ import SecondSingleProduct from './SecondSingleProduct';
 
 const WishListItem = () => {
     const [isOpen, setIsOpen] = useSideBar();
-    const [option, setOption] = useState(1);
+     const [option, setOption] = useState(window.innerWidth >= 1440 ? 7 : window.innerWidth >= 1024 ? 6 : window.innerWidth >= 768 ? 5 : window.innerWidth >= 425 ? 2 : 1);
     const [wishList, dispatch] = useWishlist();
 
     useEffect(() => {

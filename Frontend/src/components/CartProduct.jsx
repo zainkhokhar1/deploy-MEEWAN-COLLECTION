@@ -48,20 +48,20 @@ const CartProduct = ({ product, cartPage }) => {
     return (
         <Link>
             <div className={`lg:flex grid grid-cols-8 mb-3 h-fit pl-4 px-2 pb-3 border lg:border-b-transparent border-b-slate-300 border-transparent ${cartPage ? "flex-row pb-6" : ""}`}>
-                <div className='lg:min-w-44 lg:max-h-48 col-span-3 max-w-32 max-h-36 md:max-w-64 md:min-h-56 min-w-24 min-h-32 xsm:min-h-40 xmd:min-w-44 xmd:min-h-44'>
+                <div className='lg:min-w-44 lg:max-h-48 col-span-3 max-w-32 max-h-36 md:max-w-60 md:min-h-56 min-w-24 min-h-32 xsm:min-h-40 xmd:min-w-44 xmd:min-h-44'>
                     <img className='max-w-full xsm:min-w-full min-h-full max-h-full object-cover' src={product.images[0]} alt="ItemImage" />
                 </div>
                 <div className={`w-full pl-3 lg:pl-2 py-2 col-span-4 md:space-y-3 space-y-1 ${cartPage ? "lg:flex col-span-4 items-center justify-between lg:px-14" : "block"}`}>
-                    <div className='line-clamp-2 w-full lg:w-24 font-semibold md:text-xl lg:text-lg text-base'>
+                    <div className={`${cartPage ? "lg:h-28" : ""} line-clamp-2 w-full lg:w-24 font-semibold md:text-xl lg:text-lg text-base`}>
                         {
                             product.title
                         }
                     </div>
-                    <div className={` ${cartPage ? "md:flex md:flex-col md:items-start lg:gap-4" : "block"} space-y-1 lg:space-y-0 flex items-center gap-2`}>
+                    <div className={` ${cartPage ? "md:flex md:flex-col md:items-start lg:gap-4" : "block"} space-y-1 lg:space-y-0 items-center gap-2`}>
                         <div className='line-through text-slate-500 md:text-xl text-base'>Rs.{product.originalPrice}</div>
                         <div className='text-red-600 md:text-xl text-base font-semibold'>Rs.{product.salePrice}</div>
                     </div>
-                    <div className='flex md:w-28 w-24 px-1 cursor-pointer h-fit md:py-1 items-center border rounded-full border-black'>
+                    <div className={`flex md:w-28 w-24 px-1 cursor-pointer h-fit md:py-1 items-center border rounded-full border-black ${cartPage ? "lg:ml-6" : ""}`}>
                         <div className='flex w-1/3 items-center justify-center' onClick={() => {
                             if (product.qty > 1) {
                                 setQty(qty - 1)

@@ -9,6 +9,7 @@ export const searchContext = createContext();
 export const cartContext = createContext();
 export const showCartContext = createContext();
 export const sortByContext = createContext();
+export const filterByContext = createContext();
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -51,6 +52,7 @@ export const SideBarProvider = ({ children }) => {
     const [showCart, setShowCart] = useState(false);
     const [cart, dispatchCart] = useReducer(reducer1, initialState());
     const [sortBy, setSortBy] = useState(localStorage.getItem('sort') || '');
+    const [filterBy, setFilterBy] = useState(localStorage.getItem('filterBy') || '');
 
     useEffect(() => {
 
@@ -64,17 +66,14 @@ export const SideBarProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem('sort', sortBy)
-    }, [sortBy])
-    // useEffect(() => {
-    //     if (cart.length > 0) {
-    //         localStorage.setItem('Cart', JSON.stringify(cart));
-    //     }
-    //     else {
-    //         localStorage.removeItem("Cart")
-    //     }
-    // }, [cart]);
+    }, [sortBy]);
+
+    useEffect(() => {
+        localStorage.setItem('filterBy', filterBy)
+    }, [filterBy]);
 
     return (
+        <filterByContext.Provider value={[filterBy, setFilterBy]}>
             <sortByContext.Provider value={[sortBy, setSortBy]}>
                 <showCartContext.Provider value={[showCart, setShowCart]}>
                     <cartContext.Provider value={[cart, dispatchCart]}>
@@ -92,6 +91,7 @@ export const SideBarProvider = ({ children }) => {
                     </cartContext.Provider>
                 </showCartContext.Provider>
             </sortByContext.Provider>
+        </filterByContext.Provider>
     )
 }
 
@@ -103,3 +103,4 @@ export const useSearch = () => useContext(searchContext);
 export const useCart = () => useContext(showCartContext);
 export const useAddCart = () => useContext(cartContext);
 export const useSortBy = () => useContext(sortByContext);
+export const useFilterBy = () => useContext(filterByContext);

@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FiHeart } from "react-icons/fi";
 import { FaFacebookF, FaInstagram, FaPlus, FaYoutube } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
@@ -13,20 +13,24 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import axios from 'axios';
+import useProducts from '../../Hooks/products/useAllProducts.hook.js';
+import useSingleProduct from '../../Hooks/products/useSingleProduct.js';
+
 const PreviewItem = () => {
 
     const [wishList, dispatch] = useWishlist();
     const [cart, dispatchCart] = useAddCart();
-    const [products, setProducts] = useState([]);
+    const { products, loading, error, totalProducts } = useProducts();
     const { id } = useParams();
     const [qty, setQty] = useState(1);
     const [like, setLike] = useState(false);
-    const [product, setProduct] = useState([]);
+    const { product, isloading, isError } = useSingleProduct(id);
     const [size, setSize] = useState(0);
     const [newProducts, setNewProducts] = useState([]);
     const [recentlyViewed, setRecentlyViewed] = useState(localStorage.getItem('recentlyViewed') ? JSON.parse(localStorage.getItem('recentlyViewed')) : []);
     const [recentlyViewedProducts, setRecentlyViewedProducts] = useState([]);
     const [imageSelected, setImageSelected] = useState('');
+    const Navigate = useNavigate();
     const settings1 = {
         dots: false,
         infinite: true,
@@ -135,6 +139,15 @@ const PreviewItem = () => {
         },
     ]
 
+    // Initializing the products
+    useEffect(() => {
+        if (!isloading) {
+            setImageSelected(product[0].images[0]);
+            setSize(product[0].sizes[0]);
+        }
+    }, [isloading, loading])
+
+
     // Checking the like and unlike functionality of the item
     const handleLike = (product) => {
         const alreadyInWishlist = wishList.some(item => item._id === product._id);
@@ -156,28 +169,10 @@ const PreviewItem = () => {
         }
     }
     // Calling backend for a single product item
-    const getSingleProduct = async () => {
-        try {
-            let product = await axios.get(`http://localhost:3001/product/${id}`);
-            if (product.data.success) {
-                setProduct(product.data.product);
-                setImageSelected(product.data.product[0].images[0]);
-                setSize(product.data.product[0].sizes[0]);
-            }
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-    }
-    useEffect(() => {
-        if (id) {
-            getSingleProduct();
-        }
-    }, [id]); // Ensure that you are only fetching when 'id' changes
 
     // checking for the addition of the wishlist item
     useEffect(() => {
-        if (wishList.length > 0 && product.length > 0) {
+        if (wishList.length > 0 && !isloading) {
             const checking = wishList.some(singleItem => singleItem._id === product[0]._id);
             setLike(checking);
         }
@@ -185,16 +180,16 @@ const PreviewItem = () => {
 
     // Here updating the filtered product so that "YOU MAY ALSO LIKE" section must not contain the id that is showing right now
     useEffect(() => {
-        if (products.length > 0) {
+        if (!loading && !isloading) {
             const filtered = products.filter((single) => {
                 return single._id !== product[0]._id
             });
             setNewProducts(filtered);
         }
-    }, [product, id]);
+    }, [loading,isloading, id]);
 
     useEffect(() => {
-        if (products.length > 0 && product.length > 0) {
+        if (!isloading && newProducts.length > 0) {
             const oldData = localStorage.getItem('recentlyViewed')
                 ? JSON.parse(localStorage.getItem('recentlyViewed'))
                 : [];
@@ -215,7 +210,7 @@ const PreviewItem = () => {
                 setRecentlyViewedProducts(newRecents);
             }
         }
-    }, [product, newProducts]); // Added newProducts as a dependency
+    }, [isloading, newProducts]); // Added newProducts as a dependency
 
     // Adding item to the cart handler Function
     const addToCart = (product) => {
@@ -246,31 +241,21 @@ const PreviewItem = () => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-    // Fetching all the products from the backend
-    const getAllProducts = async () => {
-        try {
-            let token = localStorage.getItem('token') || '';
-            let allProducts = await axios.post('http://localhost:3001/product/all', { token });
-            if (allProducts.data.success) {
-                setProducts(allProducts.data.products);
-                setNewProducts(allProducts.data.products);
-            }
-        }
-        catch (e) {
-            console.log(e.message);
-        }
+    // Handling navigation if there is an error (login issue, etc.)
+    if (error || isError) {
+        toast.error(error);
+        localStorage.removeItem("token");
+        Navigate("/login");
     }
-    useEffect(() => {
-        getAllProducts();
-    }, []);
+
     return (
         <>
             {
-                product && product.length > 0 ? <> <div className='p-3 xl:ml-3 pt-12'>
-                    <div className='flex flex-col'>
+                !isloading && !loading ? <> <div className='p-3 xl:ml-3 pt-12'>
+                    <div className='flex flex-col lg:pl-16'>
                         <div className='flex flex-col md:grid md:grid-cols-8 '>
-                            <div className={`${product[0].images.length > 1 ? "h-[30rem] lg:min-h-[44rem] xl:min-h-[44rem] md:min-h-[36rem]" : "h-fit lg:min-h-[35rem] xl:min-h-[35rem] md:min-h-[30rem]"} 'w-full h-96  relative md:col-span-4 lg:col-span-3'`}>
-                                <div className='w-full h-96 lg:min-h-[38rem] xl:min-h-[38rem] md:min-h-[30rem] relative md:col-span-4 lg:col-span-3'>
+                            <div className={`${product[0]?.images.filter((imgs) => imageSelected !== imgs).length > 0 ? "h-[30rem] lg:min-h-[35rem] xl:min-h-[35rem] md:min-h-[36rem]" : "h-fit lg:min-h-[30rem] xl:min-h-[30rem] md:min-h-[30rem]"} 'w-full h-96  relative md:col-span-4 lg:col-span-3 xl:col-span-2'`}>
+                                <div className='w-full h-96 lg:min-h-[30rem] xl:min-h-[30rem] md:min-h-[30rem] relative md:col-span-4 lg:col-span-3'>
                                     <img className='w-full h-full object-cover pr-1 sm:pr-0' src={imageSelected} alt="ImageDefault" />
                                     <div className='px-[9px] py-[10px] text-xs rounded-full bg-[#ff4e00] text-white absolute top-4 right-2'>
                                         {Math.round((((product[0].originalPrice - product[0].salePrice) / product[0].originalPrice) * 100))}%
@@ -279,9 +264,9 @@ const PreviewItem = () => {
                                         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 448 512" width="14"><path d="M416 176V86.63L246.6 256L416 425.4V336c0-8.844 7.156-16 16-16s16 7.156 16 16v128c0 8.844-7.156 16-16 16h-128c-8.844 0-16-7.156-16-16s7.156-16 16-16h89.38L224 278.6L54.63 448H144C152.8 448 160 455.2 160 464S152.8 480 144 480h-128C7.156 480 0 472.8 0 464v-128C0 327.2 7.156 320 16 320S32 327.2 32 336v89.38L201.4 256L32 86.63V176C32 184.8 24.84 192 16 192S0 184.8 0 176v-128C0 39.16 7.156 32 16 32h128C152.8 32 160 39.16 160 48S152.8 64 144 64H54.63L224 233.4L393.4 64H304C295.2 64 288 56.84 288 48S295.2 32 304 32h128C440.8 32 448 39.16 448 48v128C448 184.8 440.8 192 432 192S416 184.8 416 176z"></path></svg>
                                     </div>
                                 </div>
-                                <div className='flex items-center'>
+                                <div className={`items-center ${product[0]?.images.filter((imgs) => imageSelected !== imgs).length > 1 ? "flex" : "hidden"}`}>
                                     {
-                                        product[0].images.filter((imgs) => imageSelected !== imgs).map((img) => {
+                                        product[0]?.images.filter((imgs) => imageSelected !== imgs).map((img) => {
                                             return <div className='max-h-20 cursor-pointer mt-2 ml-2 overflow-hidden max-w-16 opacity-70 hover:opacity-100 duration-200'>
                                                 <img className='w-full object-cover h-full' onClick={() => setImageSelected(img)} src={img} alt="ProductImage" />
                                             </div>

@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react'
 import { RxCross2 } from "react-icons/rx";
 import products from '../dummydata.js';
-import { useFilter } from './ContextApi.jsx';
+import { useFilter, useFilterBy } from './ContextApi.jsx';
 const FilterSlidebar = () => {
   const [range, setRange] = useState(0);
+  const [filterBy, setFilterBy] = useFilterBy();
   const [filterOpen, setFilterOpen] = useFilter();
   const [selectedSizes, setSelectedSizes] = useState([]);
 
@@ -19,14 +20,16 @@ const FilterSlidebar = () => {
     // dispatching the event acttached when this component is open
     return () => document.body.style.overflow = "auto";
   }, [filterOpen])
+
+  // sizes array
   const sizes = [
-    "XX-Small",
-    "X-Small",
+    "XXS",
+    "XS",
     "Small",
     "Medium",
-    "Large",
-    "X-Large",
-    "XX-Large",
+    "L",
+    "XL",
+    "XXL",
     "34",
     "36",
     "38",
@@ -36,6 +39,12 @@ const FilterSlidebar = () => {
     "46",
     "48"
   ];
+
+  // useEffect to set the changed size of the product
+  useEffect(() => {
+    setFilterBy(selectedSizes);
+  }, [selectedSizes])
+
   const handleCheckboxChange = (size) => {
     setSelectedSizes((prevSelected) =>
       prevSelected.includes(size)
@@ -44,9 +53,6 @@ const FilterSlidebar = () => {
     );
   };
 
-  const priceRange = (e) => {
-    setRange(e.target.value);
-  }
   return (
     <>
       <div className={`fixed min-h-screen md:w-5/12 lg:w-3/12 lg:duration-1000 bg-white z-[999] w-11/12 duration-700 top-0 overflow-y-auto ${filterOpen === true ? 'left-0' : '-left-[900px] md:-left-[1500px] lg:-left-[2300px] xl:-left-[2700px]'}`}>
@@ -82,16 +88,16 @@ const FilterSlidebar = () => {
                   </div>
                 </h3>
                 <div className='my-7 px-3'>
-                  <input onChange={priceRange} type="range" min={0} max="20900" value={range} className="range range-accent" />
+                  <input onChange={(e) => setRange(e.target.value)} type="range" min={0} max="20900" value={range} className="range range-accent" />
                   <div className=''>
                     <span className='pr-2 text-base text-slate-600 pb-10'>
                       price:
                     </span>
                     <span className='font-semibold text-sm mt-2'>
-                      Rs. {range} - Rs. 20,900.00
+                      Rs. 0 - Rs. {range}
                     </span>
                   </div>
-                  <button className='border-2 border-black rounded-full px-8 mt-4 ml-2 py-2'>
+                  <button onClick={() => setFilterBy(range)} className='border-2 border-black rounded-full px-8 mt-4 ml-2 py-2'>
                     FILTER
                   </button>
                 </div>

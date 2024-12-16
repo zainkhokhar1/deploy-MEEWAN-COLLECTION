@@ -20,6 +20,7 @@ import { FaArrowUp } from "react-icons/fa"; // Import an icon for the button
 import Cart from "./screens/Cart";
 import Login from "./screens/Login";
 import Signup from "./screens/Signup";
+import Checkout from "./screens/Checkout";
 
 function App() {
   const [isVisible, setIsVisible] = useState(false);
@@ -63,6 +64,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path='/checkout' element={<Checkout />} />
         </Routes>
         <Toaster />
 
@@ -70,10 +72,10 @@ function App() {
         {isVisible && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-20 scroll-smooth border border-slate-300 shadow-xl right-5 bg-slate-100 text-white p-3 rounded-sm hover:bg-gray-200 z-[999]"
+            className="fixed bottom-20 scroll-smooth border border-slate-200 duration-300 text-slate-600 hover:text-white hover:bg-cyan-400 shadow-xl right-5 bg-slate-100 p-3 rounded-sm  z-[999]"
             aria-label="Scroll to top"
           >
-            <FaArrowUp size={18} className="text-slate-600" />
+            <FaArrowUp size={18} className="" />
           </button>
         )}
       </div>

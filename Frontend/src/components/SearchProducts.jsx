@@ -34,4 +34,4 @@ const SearchProducts = ({ singleProduct }) => {
     )
 }
 
-export default SearchProducts
+export default SearchProducts;

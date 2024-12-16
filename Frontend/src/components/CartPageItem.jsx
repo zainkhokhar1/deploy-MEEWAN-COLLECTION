@@ -12,13 +12,13 @@ const CartPageItem = () => {
     }, 0);
     return (
         <div className='w-full'>
-            <div className='hidden lg:flex flex-col lg:flex-row w-full lg:justify-between lg:items-center px-24 font-semibold border pb-4 border-transparent border-b-slate-200'>
+            <div className='hidden lg:flex flex-col lg:flex-row w-full lg:justify-between lg:items-center px-14 font-semibold border pb-4 border-transparent border-b-slate-200'>
                 <div className='lg:pl-24'>PRODUCT</div>
-                <div>PRICE</div>
-                <div>QUANTITY</div>
-                <div>TOTAL</div>
+                <div className='pl-32'>PRICE</div>
+                <div className='pl-2'>QUANTITY</div>
+                <div className='pr-12'>TOTAL</div>
             </div>
-            <div className='lg:pl-28 lg:pr-8 py-5 border-t-slate-200 border mb-5'>
+            <div className='lg:pl-10 lg:pr-8 py-5 border-t-slate-200 border border-l-transparent border-r-transparent mb-5'>
                 {
                     cart.map((singleItem) => {
                         return <CartProduct key={singleItem.id} cartPage={true} product={singleItem} />

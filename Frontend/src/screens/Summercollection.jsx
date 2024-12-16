@@ -8,17 +8,27 @@ import { FaInstagram } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa6';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
 import SecondSingleProduct from '../components/SecondSingleProduct';
-import { useFilter, useSideBar, useSort, useSortBy } from '../components/ContextApi';
+import { useFilter, useFilterBy, useSideBar, useSort, useSortBy } from '../components/ContextApi';
 import axios from 'axios';
+import toast from 'react-hot-toast';
+import useCategoryProduct from '../../Hooks/products/useCategoryProduct';
 
 const Summercollection = () => {
   const [filterOpen, setFilterOpen] = useFilter();
   const [isOpen, setIsOpen] = useSideBar();
-  const [summerCollection, setSummerCollection] = useState([]);
+  const { categoryProducts, error, loading } = useCategoryProduct('summerCollection');
   const [filter, setFilter] = useState('');
-  const [option, setOption] = useState(1);
+  const [option, setOption] = useState(window.innerWidth >= 1440 ? 7 : window.innerWidth >= 1024 ? 6 : window.innerWidth >= 768 ? 5 : window.innerWidth >= 425 ? 2 : 1);
   const [sort, setSort] = useSort();
-  const [sortBy,setSortBy] = useSortBy();
+  const [sortBy, setSortBy] = useSortBy();
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filterBy, setFilterBy] = useFilterBy();
+
+  // Setting up the filtered products on the loading
+  useEffect(() => {
+    setFilteredProducts(categoryProducts);
+  }, [loading]);
+
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
@@ -29,34 +39,31 @@ const Summercollection = () => {
   }
   useEffect(() => {
     if (sortBy === "Alphabetically, A-Z") {
-      let newProducts = [...summerCollection].sort((a, b) => {
+      let newProducts = [...filteredProducts].sort((a, b) => {
         return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
       });
-      setSummerCollection(newProducts);
+      setFilteredProducts(newProducts);
     }
     else if (sortBy === "Alphabetically, Z-A") {
-      let newProducts = [...summerCollection].sort((a, b) => {
+      let newProducts = [...filteredProducts].sort((a, b) => {
         return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
       });
-      setSummerCollection(newProducts);
+      setFilteredProducts(newProducts);
     }
     else if (sortBy === "Price, low to high") {
-      let newProducts = [...summerCollection].sort((a, b) => {
+      let newProducts = [...filteredProducts].sort((a, b) => {
         return b.salePrice < a.salePrice ? 1 : -1
       });
-      setSummerCollection(newProducts);
+      setFilteredProducts(newProducts);
     }
     else if (sortBy === "Price, high to low") {
-      let newProducts = [...summerCollection].sort((a, b) => {
+      let newProducts = [...filteredProducts].sort((a, b) => {
         return b.salePrice < a.salePrice ? -1 : 1
       });
-      setSummerCollection(newProducts);
+      setFilteredProducts(newProducts);
     }
     else if (sortBy === "Featured") {
-      let filteredProducts = products.filter((product) => {
-        return product.category === "Summer" || product.category.includes('Summer')
-      });
-      setSummerCollection(filteredProducts);
+      setFilteredProducts(categoryProducts);
     }
     else {
       //skip the others for now
@@ -66,60 +73,86 @@ const Summercollection = () => {
   // Filtering the products based on the filter
   useEffect(() => {
     if (filter === "Alphabetically, A-Z") {
-      let newProducts = [...summerCollection].sort((a, b) => {
+      let newProducts = [...filteredProducts].sort((a, b) => {
         return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
       });
-      setSummerCollection(newProducts);
+      setFilteredProducts(newProducts);
     }
     else if (filter === "Alphabetically, Z-A") {
-      let newProducts = [...summerCollection].sort((a, b) => {
+      let newProducts = [...filteredProducts].sort((a, b) => {
         return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
       });
-      setSummerCollection(newProducts);
+      setFilteredProducts(newProducts);
     }
     else if (filter === "Price, low to high") {
-      let newProducts = [...summerCollection].sort((a, b) => {
+      let newProducts = [...filteredProducts].sort((a, b) => {
         return b.salePrice < a.salePrice ? 1 : -1
       });
-      setSummerCollection(newProducts);
+      setFilteredProducts(newProducts);
     }
     else if (filter === "Price, high to low") {
-      let newProducts = [...summerCollection].sort((a, b) => {
+      let newProducts = [...filteredProducts].sort((a, b) => {
         return b.salePrice < a.salePrice ? -1 : 1
       });
-      setSummerCollection(newProducts);
+      setFilteredProducts(newProducts);
     }
     else if (filter === "Featured") {
-      let filteredProducts = products.filter((product) => {
-        return product.category === "Summer" || product.category.includes('Summer')
-      });
-      setSummerCollection(filteredProducts);
+      setFilteredProducts(categoryProducts);
     }
     else {
       //skip the others for now
     }
   }, [filter]);
 
-  const getSummerProduct = async () => {
-    try {
-      let categoryProducts = await axios.get('http://localhost:3001/product/category/summerCollection');
-      if (categoryProducts.data.success) {
-        setSummerCollection(categoryProducts.data.products);
+  // Changing the products based FilterBy slider values
+  useEffect(() => {
+    if (categoryProducts.length > 0) {
+      if (typeof filterBy == "string") {
+        let num = parseInt(filterBy);
+        let newProducts = categoryProducts.filter((singleProduct) => {
+          return singleProduct.salePrice > 0 && singleProduct.salePrice < num
+        });
+        toast.success('Filtering by Price')
+        setFilteredProducts(newProducts);
+      }
+      else if (typeof filterBy == "object") {
+        if (filterBy.length > 0) {
+          let newProducts = categoryProducts.filter((product) => {
+            return product.sizes.some((size) => filterBy.includes(size));
+          });
+          toast.success('Filtering by size')
+          setFilteredProducts(newProducts);
+        }
+        else {
+          setFilteredProducts(categoryProducts);
+        }
+      }
+      else {
+        setFilteredProducts(categoryProducts);
       }
     }
-    catch (e) {
-      console.log(e.message);
-    }
-  }
+  }, [filterBy]);
+
 
   useEffect(() => {
     setIsOpen(false);
-    getSummerProduct();
   }, []);
+
+  // For Error while getting the product
+  if (error) {
+    return toast.error('Failed to load the Kids Page');
+  }
+
+  if (loading) {
+    return <div className='h-screen w-screen flex items-center justify-center text-purple-700'>
+      <span className="loading loading-bars loading-xl"></span>
+    </div>
+  }
+
   return (
     <>
       {
-        summerCollection.length > 0 ? <div className=''>
+        categoryProducts.length > 0 ? <div className=''>
           <div className='bg-[#757575] h-9 w-full text-xl text-white flex items-center justify-center mb-9'>
             Summer Collection
           </div>
@@ -189,8 +222,8 @@ const Summercollection = () => {
           {
             option === 1 ? <div className='grid grid-cols-2 px-2 my-20 xsm:gap-1 md:gap-4 xl:mx-20 lg:mx-5 lg:gap-7 xl:px-20'>
               {
-                summerCollection.length > 0 ?
-                  summerCollection.map((summer) => {
+                filteredProducts.length > 0 ?
+                  filteredProducts.map((summer) => {
                     return <div key={summer._id} className='flex items-center justify-center'> <SingleProduct type={1} wish={false} className="col-span-1" singleProduct={summer} />
                     </div>
                   })
@@ -198,28 +231,28 @@ const Summercollection = () => {
               }
             </div> : option === 2 ? <div className='border border-slate-300 border-b-transparent mx-4 my-20 lg:mx-5 xl:mx-28'>
               {
-                summerCollection.length > 0 ? summerCollection.map((summer) => <SecondSingleProduct wish={false} key={summer._id} singleProduct={summer} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((summer) => <SecondSingleProduct wish={false} key={summer._id} singleProduct={summer} />) : ""
               }
             </div> : option === 3 ? <div className='grid grid-cols-1 px-3 my-20 mr-4 lg:mx-5 xl:px-20'>
               {
-                summerCollection.length > 0 ? summerCollection.map((summer) => <ThirdSingleProduct wish={false} key={summer._id} singleProduct={summer} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((summer) => <ThirdSingleProduct wish={false} key={summer._id} singleProduct={summer} />) : ""
               }
             </div> : option === 4 ? <div className='grid grid-cols-3 px-3 my-20 gap-3 lg:mx-5 lg:gap-5 xl:px-20'>
               {
-                summerCollection.length > 0 ? summerCollection.map((summer) => <SingleProduct type={2} wish={false} key={summer._id} singleProduct={summer} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((summer) => <SingleProduct type={2} wish={false} key={summer._id} singleProduct={summer} />) : ""
 
               }
             </div> : option === 5 ? <div className='grid grid-cols-4 px-3 my-20 gap-4 lg:mx-4 xl:px-20'>
               {
-                summerCollection.length > 0 ? summerCollection.map((summer) => <SingleProduct type={3} wish={false} key={summer._id} singleProduct={summer} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((summer) => <SingleProduct type={3} wish={false} key={summer._id} singleProduct={summer} />) : ""
               }
             </div> : option === 6 ? <div className='grid grid-cols-5 px-3 my-20 gap-4 lg:mx-4 xl:px-20'>
               {
-                summerCollection.length > 0 ? summerCollection.map((summer) => <SingleProduct type={4} wish={false} key={summer._id} singleProduct={summer} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((summer) => <SingleProduct type={4} wish={false} key={summer._id} singleProduct={summer} />) : ""
               }
             </div> : option === 7 ? <div className='grid grid-cols-6 px-3 my-20 gap-4 lg:mx-4 xl:px-20'>
               {
-                summerCollection.length > 0 ? summerCollection.map((summer) => <SingleProduct type={5} wish={false} key={summer._id} singleProduct={summer} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((summer) => <SingleProduct type={5} wish={false} key={summer._id} singleProduct={summer} />) : ""
               }
             </div> : ""
           }

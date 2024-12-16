@@ -36,8 +36,12 @@ export const createProduct = async (req, res) => {
 export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find();
+        const totalCount = await Product.countDocuments();
         if (products) {
-            res.status(200).json({ products, success: true });
+            if (products.length == 0) {
+                return res.status(200).json({ products, success: true, totalCount, noMoreProducts: true });
+            }
+            res.status(200).json({ products, success: true, totalCount });
         }
     }
     catch (e) {

@@ -6,20 +6,29 @@ import { FaInstagram } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa6';
 import SecondSingleProduct from '../components/SecondSingleProduct';
 import ThirdSingleProduct from '../components/ThirdSingleProduct';
-import { useFilter, useSort, useSortBy } from '../components/ContextApi';
+import { useFilter, useFilterBy, useSort, useSortBy } from '../components/ContextApi';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import useProducts from '../../Hooks/products/useAllProducts.hook';
 
 const Allproducts = () => {
-  const [option, setOption] = useState(1);
+  const [option, setOption] = useState(window.innerWidth >= 1440 ? 7 : window.innerWidth >= 1024 ? 6 : window.innerWidth >= 768 ? 5 : window.innerWidth >= 425 ? 2 : 1);
   const [filter, setFilter] = useState('');
   const [filterOpen, setFilterOpen] = useFilter();
-  const [allProducts, setAllProducts] = useState([]);
   const [sortBy, setSortBy] = useSortBy();
   const [sort, setSort] = useSort();
-
+  const [filterBy, setFilterBy] = useFilterBy();
   const Navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const { products, loading, error, totalProducts } = useProducts();
 
+  // Setting up the filtered products to all the products initially
+  useEffect(() => {
+    if (!loading) {
+      setFilteredProducts(products);
+    }
+  }, [loading])
   const handleFilter = (e) => {
     setFilter(e.target.value);
   }
@@ -27,53 +36,44 @@ const Allproducts = () => {
     localStorage.setItem('Sort', true);
     setSort(true);
   };
-  // Fetching products from backend
-  const getProducts = async () => {
-    try {
-      let token = localStorage.getItem('token');
-      let products = await axios.post('http://localhost:3001/product/all', { token });
-      if (products.data.success) {
-        setAllProducts(products.data.products);
-      }
-    } catch (e) {
-      toast.error('login first to visit this page');
-      localStorage.removeItem('token');
-      Navigate('/login');
-      console.log(e.message);
-    }
+
+  // Handling navigation if there is an error (login issue, etc.)
+  if (error) {
+    toast.error(error);
+    localStorage.removeItem("token");
+    Navigate("/login");
   }
-  useEffect(() => {
-    getProducts();
-  }, []);
 
   // Changing based on the value of filter
   useEffect(() => {
-    if (filter === "Alphabetically, A-Z") {
-      let newProducts = [...allProducts].sort((a, b) => {
-        return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
-      });
-      setAllProducts(newProducts);
-    }
-    else if (filter === "Alphabetically, Z-A") {
-      let newProducts = [...allProducts].sort((a, b) => {
-        return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
-      });
-      setAllProducts(newProducts);
-    }
-    else if (filter === "Price, low to high") {
-      let newProducts = [...allProducts].sort((a, b) => {
-        return b.salePrice < a.salePrice ? 1 : -1
-      });
-      setAllProducts(newProducts);
-    }
-    else if (filter === "Price, high to low") {
-      let newProducts = [...allProducts].sort((a, b) => {
-        return b.salePrice < a.salePrice ? -1 : 1
-      });
-      setAllProducts(newProducts);
-    }
-    else if (filter === "Featured") {
-      getProducts();
+    if (!loading) {
+      if (filter === "Alphabetically, A-Z") {
+        let newProducts = [...filteredProducts].sort((a, b) => {
+          return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
+        });
+        setFilteredProducts(newProducts);
+      }
+      else if (filter === "Alphabetically, Z-A") {
+        let newProducts = [...filteredProducts].sort((a, b) => {
+          return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
+        });
+        setFilteredProducts(newProducts);
+      }
+      else if (filter === "Price, low to high") {
+        let newProducts = [...filteredProducts].sort((a, b) => {
+          return b.salePrice < a.salePrice ? 1 : -1
+        });
+        setFilteredProducts(newProducts);
+      }
+      else if (filter === "Price, high to low") {
+        let newProducts = [...filteredProducts].sort((a, b) => {
+          return b.salePrice < a.salePrice ? -1 : 1
+        });
+        setFilteredProducts(newProducts);
+      }
+      else if (filter === "Featured") {
+        setFilteredProducts(products);
+      }
     }
     else {
       //skip the others for now
@@ -82,41 +82,75 @@ const Allproducts = () => {
 
   //Changing based on the value of sortBy
   useEffect(() => {
-    if (sortBy === "Alphabetically, A-Z") {
-      let newProducts = [...allProducts].sort((a, b) => {
-        return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
-      });
-      setAllProducts(newProducts);
-    }
-    else if (sortBy === "Alphabetically, Z-A") {
-      let newProducts = [...allProducts].sort((a, b) => {
-        return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
-      });
-      setAllProducts(newProducts);
-    }
-    else if (sortBy === "Price, low to high") {
-      let newProducts = [...allProducts].sort((a, b) => {
-        return b.salePrice < a.salePrice ? 1 : -1
-      });
-      setAllProducts(newProducts);
-    }
-    else if (sortBy === "Price, high to low") {
-      let newProducts = [...allProducts].sort((a, b) => {
-        return b.salePrice < a.salePrice ? -1 : 1
-      });
-      setAllProducts(newProducts);
-    }
-    else if (sortBy === "Featured") {
-      getProducts();
+    if (!loading) {
+      if (sortBy === "Alphabetically, A-Z") {
+        let newProducts = [...filteredProducts].sort((a, b) => {
+          return b.title.toLowerCase() < a.title.toLowerCase() ? 1 : -1
+        });
+        setFilteredProducts(newProducts);
+      }
+      else if (sortBy === "Alphabetically, Z-A") {
+        let newProducts = [...filteredProducts].sort((a, b) => {
+          return b.title.toLowerCase() < a.title.toLowerCase() ? -1 : 1
+        });
+        setFilteredProducts(newProducts);
+      }
+      else if (sortBy === "Price, low to high") {
+        let newProducts = [...filteredProducts].sort((a, b) => {
+          return b.salePrice < a.salePrice ? 1 : -1
+        });
+        setFilteredProducts(newProducts);
+      }
+      else if (sortBy === "Price, high to low") {
+        let newProducts = [...filteredProducts].sort((a, b) => {
+          return b.salePrice < a.salePrice ? -1 : 1
+        });
+        setFilteredProducts(newProducts);
+      }
+      else if (sortBy === "Featured") {
+        setFilteredProducts(products);
+      }
     }
     else {
       //skip the others for now
     }
   }, [sortBy]);
+
+  // Changing the products based FilterBy slider values
+  useEffect(() => {
+    if (!loading) {
+      if (typeof filterBy == "string") {
+        let num = parseInt(filterBy);
+        let newProducts = products.filter((singleProduct) => {
+          return singleProduct.salePrice > 0 && singleProduct.salePrice < num
+        });
+        toast.success('Filtering by Price')
+        setFilteredProducts(newProducts);
+      }
+      else if (typeof filterBy == "object") {
+        if (filterBy.length > 0) {
+          let newProducts = products.filter((product) => {
+            return product.sizes.some((size) => filterBy.includes(size));
+          });
+          toast.success('Filtering by size')
+          setFilteredProducts(newProducts);
+        }
+        else {
+          setFilteredProducts(products);
+        }
+      }
+    }
+  }, [filterBy])
+
+  if (loading) {
+    return <div className={`h-screen w-screen flex items-center justify-center text-purple-700`}><span className="loading loading-bars loading-xl"></span>
+    </div>
+  }
+
   return (
     <>
       {
-        allProducts.length > 0 ? <div>
+        <div>
           <div className='bg-[#757575] relative h-9 w-full text-xl text-white flex items-center justify-center mb-9'>
             All
           </div>
@@ -185,10 +219,10 @@ const Allproducts = () => {
             </div>
           </div>
           {
-            option === 1 ? <div className='grid grid-cols-2 px-2 my-20 xsm:gap-1 md:gap-4 xl:mx-20 lg:mx-5 lg:gap-7'>
+            option === 1 ? <div className='grid grid-cols-2 px-2 my-20 xsm:gap-1 md:gap-4 xl:mx-20 lg:mx-5 lg:gap-7 text-center'>
               {
-                allProducts.length > 0 ?
-                  allProducts.map((product) => {
+                filteredProducts.length > 0 ?
+                  filteredProducts.map((product) => {
                     return <div key={product._id} className='flex items-center justify-center'> <SingleProduct type={1} wish={false} className="col-span-1" singleProduct={product} />
                     </div>
                   })
@@ -196,28 +230,28 @@ const Allproducts = () => {
               }
             </div> : option === 2 ? <div className='border border-slate-300 border-b-transparent mx-4 my-20 lg:mx-5 xl:mx-20'>
               {
-                allProducts.length > 0 ? allProducts.map((product) => <SecondSingleProduct wish={false} key={product._id} singleProduct={product} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((product) => <SecondSingleProduct wish={false} key={product._id} singleProduct={product} />) : ""
               }
             </div> : option === 3 ? <div className='grid grid-cols-1 px-3 my-20 mr-4 lg:mx-5 xl:px-20'>
               {
-                allProducts.length > 0 ? allProducts.map((product) => <ThirdSingleProduct wish={false} key={product._id} singleProduct={product} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((product) => <ThirdSingleProduct wish={false} key={product._id} singleProduct={product} />) : ""
               }
             </div> : option === 4 ? <div className='grid grid-cols-3 px-3 my-20 gap-3 lg:mx-5 lg:gap-5 xl:px-20'>
               {
-                allProducts.length > 0 ? allProducts.map((product) => <SingleProduct type={2} wish={false} key={product._id} singleProduct={product} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((product) => <SingleProduct type={2} wish={false} key={product._id} singleProduct={product} />) : ""
 
               }
             </div> : option === 5 ? <div className='grid grid-cols-4 px-3 my-20 gap-4 lg:mx-4 xl:px-20'>
               {
-                allProducts.length > 0 ? allProducts.map((product) => <SingleProduct type={3} wish={false} key={product._id} singleProduct={product} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((product) => <SingleProduct type={3} wish={false} key={product._id} singleProduct={product} />) : ""
               }
             </div> : option === 6 ? <div className='grid grid-cols-5 px-3 my-20 gap-4 lg:mx-4 xl:px-20'>
               {
-                allProducts.length > 0 ? allProducts.map((product) => <SingleProduct type={4} wish={false} key={product._id} singleProduct={product} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((product) => <SingleProduct type={4} wish={false} key={product._id} singleProduct={product} />) : ""
               }
             </div> : option === 7 ? <div className='grid grid-cols-6 px-3 my-20 gap-4 lg:mx-4 xl:px-20'>
               {
-                allProducts.length > 0 ? allProducts.map((product) => <SingleProduct type={5} wish={false} key={product._id} singleProduct={product} />) : ""
+                filteredProducts.length > 0 ? filteredProducts.map((product) => <SingleProduct type={5} wish={false} key={product._id} singleProduct={product} />) : ""
               }
             </div> : ""
           }
@@ -235,8 +269,6 @@ const Allproducts = () => {
           <div className="text-sm px-10 text-center text-slate-500 line-clamp-2 pb-5">
             Copyright © 2024 <span className="text-sky-500">Meewan</span> all rights Reserved.
           </div>
-        </div> : <div className='h-screen w-screen flex items-center justify-center text-purple-700'>
-          <span className="loading loading-bars loading-xl"></span>
         </div>
       }
     </>
