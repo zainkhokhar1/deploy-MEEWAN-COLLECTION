@@ -32,7 +32,7 @@ const Checkout = () => {
                 });
                 return Navigate('/');
             }
-            if (creationOrder.data.success) {
+            if (creationOrder.data.success == false) {
                 console.log('Failed to create the order');
             }
         }

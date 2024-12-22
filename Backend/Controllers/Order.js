@@ -5,7 +5,6 @@ import { Order } from "../Models/OrderModel.js";
 export const createOrder = async (req, res) => {
     try {
         let { products, totalPrice, owner, totalProducts, phoneNumber, email, firstName, lastName, address } = req.body;
-        console.log(products, totalPrice, owner, totalProducts);
 
         let creation = await Order.create({ products, totalPrice, owner, totalProducts, phoneNumber, email, firstName, lastName, address });
         if (creation) {

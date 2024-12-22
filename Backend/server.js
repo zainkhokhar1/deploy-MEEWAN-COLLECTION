@@ -6,6 +6,7 @@ import cors from 'cors';
 import ProductRoute from './Routes/ProductRoute.js';
 import UserRoute from './Routes/UserRoute.js'
 import OrderRoute from './Routes/OrderRoute.js'
+import path from 'path';
 // app creation and configuration of the dotenv 
 const app = express();
 dotenv.config();
@@ -13,6 +14,8 @@ dotenv.config();
 // Basic middlewares to get access to the req body and other data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+const _dirname = path.resolve();
 
 // Cross origin allow
 app.use(cors());
@@ -26,10 +29,6 @@ connectMongoDB();
 app.listen(port, () => {
     console.log("Listening on the port " + port);
 });
-// basic entry route for checking
-app.get('/', (req, res) => {
-    res.send("Listening on /");
-})
 
 // Routes 
 // ---------->>>> PRODUCT ROUTE -----------------------<<<< //
@@ -40,3 +39,9 @@ app.use('/user',UserRoute);
 
 // ---------->>>> ORDER ROUTE --------------------------<<<<< //
 app.use('/order',OrderRoute);
+
+app.use(express.static(path.join(_dirname,"/frontend/dist")));
+
+app.get('*',(_,res)=>{
+    res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"));
+})
