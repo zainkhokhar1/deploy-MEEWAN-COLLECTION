@@ -67,7 +67,7 @@ const CartSlider = ({ right }) => {
                         <Link to='/cart' className='text-center block w-10/12 bg-slate-200 hover:bg-slate-300 duration-300 hover:shadow-sm rounded-full py-3 mx-auto mb-2'>
                             VIEW CART
                         </Link>
-                        <Link className='text-center block w-10/12 bg-[#23b2c7] font-semibold tracking-wide hover:bg-[#359dad] duration-300 ease-in-out text-white rounded-full py-4 mx-auto'>
+                        <Link to='/checkout' className='text-center block w-10/12 bg-[#23b2c7] font-semibold tracking-wide hover:bg-[#359dad] duration-300 ease-in-out text-white rounded-full py-4 mx-auto'>
                             CHECK OUT
                         </Link>
                     </div>

@@ -6,7 +6,7 @@ import Home from "./screens/Home";
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
 } from "react-router-dom";
 import Men from "./screens/Men";
 import Women from "./screens/Women";
@@ -16,7 +16,7 @@ import Kids from "./screens/Kids";
 import Allproducts from "./screens/Allproducts";
 import PreviewItem from "./components/PreviewItem";
 import WishListItem from "./components/WishListItem";
-import { FaArrowUp } from "react-icons/fa"; // Import an icon for the button
+import { FaArrowUp } from "react-icons/fa";
 import Cart from "./screens/Cart";
 import Login from "./screens/Login";
 import Signup from "./screens/Signup";
@@ -24,7 +24,7 @@ import Checkout from "./screens/Checkout";
 
 function App() {
   const [isVisible, setIsVisible] = useState(false);
-
+  
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -65,6 +65,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path='/checkout' element={<Checkout />} />
+
         </Routes>
         <Toaster />
 

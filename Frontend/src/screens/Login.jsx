@@ -14,6 +14,7 @@ const Login = () => {
             let creation = await axios.post('http://localhost:3001/user/login', data);
             if (creation.data.success) {
                 localStorage.setItem('token',creation.data.jwtToken);
+                localStorage.setItem('userId',creation.data._id);
                 Navigate('/');
                 reset();
                  toast.success('Welcome Back!');

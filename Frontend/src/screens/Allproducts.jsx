@@ -40,6 +40,7 @@ const Allproducts = () => {
   // Handling navigation if there is an error (login issue, etc.)
   if (error) {
     toast.error(error);
+    localStorage.removeItem("userId");
     localStorage.removeItem("token");
     Navigate("/login");
   }

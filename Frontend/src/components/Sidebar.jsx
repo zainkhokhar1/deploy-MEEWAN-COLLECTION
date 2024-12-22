@@ -82,7 +82,7 @@ const Sidebar = () => {
                             <span>Login / Register</span>
                         </h3>
                     </Link>
-                    <div className={`${localStorage.getItem('token') ? "block" : "hidden"}`} onClick={() => { localStorage.removeItem('token'); Navigate('/login'); toast.success('Logged out !') }}>
+                    <div className={`${localStorage.getItem('token') ? "block" : "hidden"}`} onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('userId'); Navigate('/login'); toast.success('Logged out !') }}>
                         <h3 className='text-base pl-5 pt-3 h-12 border-b-slate-200 border-b flex items-center pb-2 gap-1'>
                             <IoMdLogOut className='text-xl' />
                             <span>Logout</span>

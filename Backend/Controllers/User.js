@@ -24,7 +24,7 @@ export const createUser = async (req, res) => {
             let token = jwt.sign({
                 data: user[0]._id,
             }, secret);
-            res.status(200).json({ success: true, message: "Created user Successfully", jwtToken: token });
+            res.status(200).json({ success: true, message: "Created user Successfully", jwtToken: token, _id: user[0]._id });
         }
     }
     catch (e) {
@@ -47,7 +47,7 @@ export const loginUser = async (req, res) => {
                 let token = jwt.sign({
                     data: exsistanceCheck[0]?._id
                 }, secret);
-                return res.status(200).json({ success: true, message: "Welcome to MEEWAN Collection", jwtToken: token });
+                return res.status(200).json({ success: true, message: "Welcome to MEEWAN Collection", jwtToken: token, _id: exsistanceCheck[0]._id });
             }
             else {
                 return res.status(200).json({ success: false, message: "Incorrect Password" });
@@ -55,7 +55,7 @@ export const loginUser = async (req, res) => {
         }
     }
     catch (e) {
-        console .log(e.message);
+        console.log(e.message);
         return res.status(400).json({ success: false, message: "Error from the backend" });
     }
 }

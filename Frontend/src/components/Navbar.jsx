@@ -4,7 +4,7 @@ import { GoSearch } from "react-icons/go";
 import { LiaShoppingBagSolid } from "react-icons/lia";
 import Sidebar from './Sidebar';
 import { useAddCart, useCart, useSearch, useSideBar, useWishlist } from './ContextApi';
-import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeartEmpty, IoMdLogOut } from "react-icons/io";
 import { LiaUser } from "react-icons/lia";
 import { Link, useNavigate } from 'react-router-dom';
 import FilterSlidebar from './FilterSlidebar.jsx';
@@ -41,10 +41,10 @@ const Navbar = () => {
                 </div>
                 <div className='flex items-start text-center'>
                     <div className='flex items-center justify-center h-4 pr-1'>
-                    <svg className='-mt-1 h-fit' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" class="ml__15" width="20" height="32" viewBox="0 0 32 32"><path d="M16.001 1.072c5.291 0 9.596 4.305 9.596 9.597 0 1.683-0.446 3.341-1.29 4.799l-8.307 14.394-8.308-14.395c-0.843-1.456-1.289-3.115-1.289-4.798 0-5.292 4.305-9.597 9.597-9.597zM16.001 14.4c2.058 0 3.731-1.674 3.731-3.731s-1.674-3.731-3.731-3.731c-2.058 0-3.732 1.674-3.732 3.731s1.674 3.731 3.732 3.731zM16.001 0.006c-5.889 0-10.663 4.775-10.663 10.663 0 1.945 0.523 3.762 1.432 5.332l9.23 15.994 9.23-15.994c0.909-1.57 1.432-3.387 1.432-5.332 0-5.888-4.774-10.663-10.662-10.663v0zM16.001 13.334c-1.472 0-2.666-1.193-2.666-2.665 0-1.471 1.194-2.665 2.666-2.665s2.665 1.194 2.665 2.665c0 1.472-1.193 2.665-2.665 2.665v0z" fillRule="currentColor"></path></svg>
-                    Location:
+                        <svg className='-mt-1 h-fit' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" class="ml__15" width="20" height="32" viewBox="0 0 32 32"><path d="M16.001 1.072c5.291 0 9.596 4.305 9.596 9.597 0 1.683-0.446 3.341-1.29 4.799l-8.307 14.394-8.308-14.395c-0.843-1.456-1.289-3.115-1.289-4.798 0-5.292 4.305-9.597 9.597-9.597zM16.001 14.4c2.058 0 3.731-1.674 3.731-3.731s-1.674-3.731-3.731-3.731c-2.058 0-3.732 1.674-3.732 3.731s1.674 3.731 3.732 3.731zM16.001 0.006c-5.889 0-10.663 4.775-10.663 10.663 0 1.945 0.523 3.762 1.432 5.332l9.23 15.994 9.23-15.994c0.909-1.57 1.432-3.387 1.432-5.332 0-5.888-4.774-10.663-10.662-10.663v0zM16.001 13.334c-1.472 0-2.666-1.193-2.666-2.665 0-1.471 1.194-2.665 2.666-2.665s2.665 1.194 2.665 2.665c0 1.472-1.193 2.665-2.665 2.665v0z" fillRule="currentColor"></path></svg>
+                        Location:
                     </div>
-                      House 13, Boulevard Rd, Eden Lahore,
+                    House 13, Boulevard Rd, Eden Lahore,
                 </div>
             </div>
             {/* Here Navbar will be shown */}
@@ -69,6 +69,9 @@ const Navbar = () => {
                     <GoSearch onClick={() => { setOpenSearch(true); localStorage.setItem("Search", true); }} className='text-2xl cursor-pointer ml-6 md:ml-14 lg:ml-28 xl:ml-52 text-slate-800 hover:text-purple-500 hover:rotate-6 duration-200 block' />
                     <Link to='/login'>
                         <LiaUser className={`${localStorage.getItem('token') ? "hidden" : "md:block"} text-2xl ml-3 text-slate-800 hover:text-purple-500 hover:rotate-6 hover:scale-125 duration-200 cursor-pointer`} />
+                    </Link>
+                    <Link onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('userId'); Navigate('/login'); toast.success('Logged out !') }}>
+                        <IoMdLogOut className={`${localStorage.getItem('token') ? "md:block" : "hidden"} text-2xl ml-3 text-slate-800 hover:text-purple-500 hover:rotate-6 hover:scale-125 duration-200 cursor-pointer`} />
                     </Link>
                     <Link to='/wishlist' className='relative w-fit h-fit hidden md:block'>
                         <IoMdHeartEmpty className='text-2xl -mt-1 ml-4 text-slate-800 hover:text-purple-500 hover:scale-110 hover:rotate-12 duration-200' />

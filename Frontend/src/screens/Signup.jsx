@@ -13,10 +13,11 @@ const Signup = () => {
         try {
             let creation = await axios.post('http://localhost:3001/user/create', data);
             if (creation.data.success) {
-                localStorage.setItem('token',creation.data.jwtToken);
+                localStorage.setItem('token', creation.data.jwtToken);
+                localStorage.setItem('userId', creation.data._id);
                 reset();
                 Navigate('/');
-                 toast.success('Welcome to MEEWAN COLLECITON!');
+                toast.success('Welcome to MEEWAN COLLECITON!');
             }
             else {
                 toast.error(creation.data.message);

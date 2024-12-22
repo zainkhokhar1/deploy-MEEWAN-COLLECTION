@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import CartProduct from './CartProduct';
 import { useAddCart } from './ContextApi';
 import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const CartPageItem = () => {
     const [cart, dispatchCart] = useAddCart();
@@ -52,9 +53,9 @@ const CartPageItem = () => {
                             <input type="checkbox" id='terms' onClick={() => setAgreed(!agreed)} />
                             <label className='md:text-lg cursor-pointer text-slate-600' htmlFor="terms">I agree with the terms and conditions</label>
                         </div>
-                        <button className={`py-3 ${agreed ? "block" : "disabled cursor-not-allowed"} bg-[#56cfe1] text-white w-52 rounded-full font-semibold`}>
+                        <Link to={`${agreed ? "/checkout" : ""}`} className={`py-3 flex items-center justify-center ${agreed ? "block" : "disabled cursor-not-allowed"} bg-[#56cfe1] text-white w-52 rounded-full font-semibold`}>
                             Check Out
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
